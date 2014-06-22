@@ -7,7 +7,7 @@
 
 library(RColorBrewer)
 library(tessella)
-source.pkg("yagpack")
+source.pkg("yagpack") # or library(yagpack)
 if (interactive()) x11() else pdf()
 .yagpenv$backend <- graphics_primitives()
 
@@ -67,7 +67,6 @@ p
 ## pairs, each of which we can think of as a layer in the ggplot2
 ## sense.
 
-
 ## But how about different data source?  We assume the same
 ## margin.vars and panel.vars, but is that enough?  In any case, the
 ## 'superpanel' function has to change then.  In the most general
@@ -81,7 +80,7 @@ p
 l <- 
     ylayer(mapping = map_points(col = "red"),
            render = render_points(),
-           data = NULL, margin.vars=NULL)
+           data = NULL, margin.vars = NULL)
 
 (p <- yplot(data = mtcars,
             margin.vars = elist(gear = factor(gear)),
@@ -99,7 +98,7 @@ l <-
 ## ypanel.xyplot <- ylayer(mapping = map_points(), render = render_points())
 ## ypanel.grid <- ylayer(mapping = map_null(), render = render_grid(h = -1, v = -1))
 
-## ypanel.xyplot() defines automatix xlab and ylab
+## ypanel.xyplot() defines automatic xlab and ylab
 
 yplot(data = mtcars,
       margin.vars = elist(gear = factor(gear)),
@@ -215,6 +214,7 @@ yplot(data = iris,
       panel = ypanel.histogram(stack = FALSE))
 
 ## FIXME: list(x=...) should work, but need to fix evaluate 
+
 yplot(data = data.frame(x = factor(rpois(1000, lambda = 5))),
       panel.vars = elist(x = x),
       panel = ypanel.histogram(stack = FALSE))
