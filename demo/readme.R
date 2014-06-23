@@ -7,7 +7,8 @@
 
 library(RColorBrewer)
 library(tessella)
-source.pkg("yagpack") # or library(yagpack)
+## source.pkg("yagpack") # or
+library(yagpack)
 if (interactive()) x11() else pdf()
 .yagpenv$backend <- graphics_primitives()
 
@@ -39,21 +40,21 @@ p
 
 ## We want both of the following to work
 
-## p <- yplot(data = mtcars,
-##            margin.vars = elist(gear = factor(gear)),
-##            panel.vars = elist(x = disp, y = mpg, size = wt),
-##            panel = ygrid(h = -1, v = -1) + ypoints())
+## yplot(data = mtcars,
+##       margin.vars = elist(gear = factor(gear)),
+##       panel.vars = elist(x = disp, y = mpg, size = wt),
+##       panel = ypanel.grid(h = -1, v = -1) + ypanel.points())
 
 
-## p <- yplot(data = mtcars,
-##            margin.vars = elist(gear = factor(gear)),
-##            panel.vars = elist(x = disp, y = mpg, size = wt),
-##            mapping = map_points,
-##            panel = function(x, y, groups, ...) {
-##                ypanel.grid(h = -1, v = -1)
-##                ypanel.points(x, y)
-##            },
-##            prepanel = function(x, y, ...) default.limits(x, y))
+## yplot(data = mtcars,
+##       margin.vars = elist(gear = factor(gear)),
+##       panel.vars = elist(x = disp, y = mpg, size = wt),
+##       mapping = map_points,
+##       panel = function(x, y, groups, ...) {
+##           ypanel.grid(h = -1, v = -1)
+##           ypanel.points(x, y)
+##       },
+##       prepanel = function(x, y, ...) default.limits(x, y))
 
 
 ## But what if we want points + smooth?  These are technically different operations:
@@ -75,23 +76,29 @@ p
 ## first one's details, and the second one provides a layer with new
 ## data.
 
-## OK, so let's make the following constructor:
+## OK, so let's make the following layers:
 
-l <- 
+lpoints <- 
     ylayer(mapping = map_points(col = "red"),
            render = render_points(),
            data = NULL, margin.vars = NULL)
 
+lsmooth <- 
+    ylayer(mapping = map_lm(degree = 2),
+           render = render_lines(lwd = 2),
+           data = NULL, margin.vars = NULL)
+
+
 (p <- yplot(data = mtcars,
             margin.vars = elist(gear = factor(gear)),
             panel.vars = elist(x = disp, y = mpg, size = wt),
-            panel = l)
+            panel = lpoints + lsmooth)
  )
 
 (p <- yplot(data = mtcars,
             margin.vars = elist(gear = factor(gear)),
             panel.vars = elist(x = disp, y = mpg, color = hp, size = wt),
-            panel = l,
+            panel = lpoints,
             xlab= "disp", ylab = "mpg")
 )
 
@@ -130,7 +137,8 @@ xtabs(~ gear + cyl, mtcars)
 
 if (FALSE)
 (p <- 
-yplot(data = mtcars, #subset(mtcars, gear != 4),
+
+ yplot(data = mtcars, #subset(mtcars, gear != 4),
       margin.vars = elist(gear = factor(gear), cyl = factor(cyl)),
       panel.vars = elist(x = disp, y = mpg),
       panel = ypanel.grid() + ypanel.xyplot(),
