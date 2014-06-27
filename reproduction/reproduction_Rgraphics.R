@@ -12,7 +12,7 @@ p <- yplot(data = pressure,
     panel.vars = elist(x = temperature, y = pressure),
     panel = ypanel.xyplot(col="blue") + 
         ypanel.abline(h = 200, col = "orange", lwd = 2),
-    pch = 19, xlab = "Temp (Celcius)", ylab = "Pressure (mm Hg)")
+    pch = 19, xlab = "Temp (Celsius)", ylab = "Pressure (mm Hg)")
 p
 
 # TODO
