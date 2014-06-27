@@ -219,39 +219,48 @@ dimnames.yagp <- function(x)
 
 xyplot <- yplot_xy <- 
     function(x, y = NULL, data, enclos, groups = NULL, color = NULL, size = NULL,
-             legend = auto.legend("p", panel.vars, data = data, enclos = enclos, more.args = legend.args),
+             legend = auto.legend("p", panel.vars, data = data, enclos = enclos, 
+                 more.args = legend.args),
              legend.args = list(),
              panel = ypanel.xyplot(), 
              ...)
 {
-    panel.vars <- panel.terms(list(x = substitute(x), y = substitute(y), groups = substitute(groups), color = substitute(color), size = substitute(size)))
+    panel.vars <- panel.terms(list(x = substitute(x), y = substitute(y), 
+            groups = substitute(groups), color = substitute(color), 
+            size = substitute(size)))
     if (missing(data)) data <- parent.frame()
     if (missing(enclos)) enclos <- parent.frame()
-    yplot(data = data, enclos = enclos, panel.vars = panel.vars, panel = panel, legend = legend, ...)
+    yplot(data = data, enclos = enclos, panel.vars = panel.vars, 
+        panel = panel, legend = legend, ...)
 }
 
 densityplot <- yplot_density <- 
     function(x, data, enclos, weights = NULL, groups = NULL, 
-             legend = auto.legend("l", panel.vars, data = data, enclos = enclos, more.args = legend.args),
+             legend = auto.legend("l", panel.vars, data = data, enclos = enclos, 
+                 more.args = legend.args),
              legend.args = list(),
              panel = ypanel.density(), ...)
 {
-    panel.vars <- panel.terms(list(x = substitute(x), weights = substitute(weights), groups = substitute(groups)))
+    panel.vars <- panel.terms(list(x = substitute(x), 
+            weights = substitute(weights), groups = substitute(groups)))
     if (missing(data)) data <- parent.frame()
     if (missing(enclos)) enclos <- parent.frame()
-    yplot(data = data, enclos = enclos, panel.vars = panel.vars, panel = panel, legend = legend, ...)
+    yplot(data = data, enclos = enclos, panel.vars = panel.vars, panel = panel, 
+        legend = legend, ...)
 }
 
 qqmath <- yplot_qqmath <- 
     function(x, data, enclos, groups = NULL, 
-             legend = auto.legend("p", panel.vars, data = data, enclos = enclos, more.args = legend.args),
+             legend = auto.legend("p", panel.vars, data = data, enclos = enclos,
+                 more.args = legend.args),
              legend.args = list(),
-             panel = ypanel.qqmath(), ...)
-{
-    panel.vars <- panel.terms(list(x = substitute(x), groups = substitute(groups)))
+             panel = ypanel.qqmath(), ...) {
+    panel.vars <- panel.terms(list(x = substitute(x), 
+            groups = substitute(groups)))
     if (missing(data)) data <- parent.frame()
     if (missing(enclos)) enclos <- parent.frame()
-    yplot(data = data, enclos = enclos, panel.vars = panel.vars, panel = panel, legend = legend, ...)
+    yplot(data = data, enclos = enclos, panel.vars = panel.vars, 
+        panel = panel, legend = legend, ...)
 }
 
 histogram <- yplot_hist <- 

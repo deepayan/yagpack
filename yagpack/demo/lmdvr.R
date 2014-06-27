@@ -42,7 +42,8 @@ densityplot(~ gcsescore, data = Chem97, groups = score,
 
 data(Oats, package = "MEMSS")
 
-tp1.oats <- xyplot(nitro, yield, margin.vars = ~ Variety + Block, data = Oats, type = 'o')
+tp1.oats <- xyplot(nitro, yield, 
+    margin.vars = ~ Variety + Block, data = Oats, type = 'o')
 
 ## tp1.oats <- xyplot(nitro, yield,
 ##                    margin.vars = elist(Variety = Variety, Block = Block),
