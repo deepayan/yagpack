@@ -16,7 +16,7 @@ p <- yplot(data = pressure,
 p
 
 # TODO
-text(150, 600, "Pressure (mm Hg) \nversus \nTemperature (Celcius)")
+text(150, 600, "Pressure (mm Hg) \nversus \nTemperature (Celsius)")
 
 
 
