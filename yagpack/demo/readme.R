@@ -72,7 +72,7 @@ p
 ## margin.vars and panel.vars, but is that enough?  In any case, the
 ## 'superpanel' function has to change then.  In the most general
 ## case, we may want to combine two separate "yagp" objects (e.g.,
-## scales lasrge enough to enclose both).  But often just use the
+## scales large enough to enclose both).  But often just use the
 ## first one's details, and the second one provides a layer with new
 ## data.
 
