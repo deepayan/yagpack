@@ -157,11 +157,13 @@ print.yagp <- function(x, ...)
 summary.yagp <-
     function(object, ...)
 {
+    ## FIXME: This sort of assumes a data.frame (at least nrow())
     ans <- 
-        with(object, 
-             structure(sapply(packets, length),
-                       dim = dim(packets),
-                       dimnames = dimnames(packets)))
+        with(object$xargs,
+             if (identical(packets, array(list(TRUE), dim = c(1)))) nrow(data)
+             else structure(sapply(packets, length),
+                            dim = dim(packets),
+                            dimnames = dimnames(packets)))
     class(ans) <- "summary.yagp"
     ans
 }
