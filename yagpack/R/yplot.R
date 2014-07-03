@@ -115,7 +115,8 @@ plot.yagp <-
              draw_labels = TRUE,
              draw_panels = TRUE,
              draw_strips = TRUE,
-             draw_axes = TRUE)
+             draw_axes = TRUE,
+             position = list(x = 0, y = 0, h = 1, w = 1))
 {
     x$panel.layout <- compute.layout(x$layout, dim(x$xargs$packets), skip = x$skip)
     packet.limits <- checkArgsAndCall(compute.limits, x$xargs)
@@ -133,6 +134,8 @@ plot.yagp <-
     a <- attr(attach(primitives), "name")
     on.exit(detach(a, character.only = TRUE))
     context <- tget_context()
+    
+
     for (p in page)
     {
         yagp_page(x, page = p, ...,
@@ -140,7 +143,9 @@ plot.yagp <-
                   draw_panels = draw_panels,
                   draw_strips = draw_strips,
                   draw_axes = draw_axes,
-                  vp = tviewport(context))
+                  vp = tviewport(tviewport(context),
+                                 x = position$x, y = position$y,
+                                 w = position$w, h = position$h))
     }
 }
 

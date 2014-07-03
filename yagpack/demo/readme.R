@@ -138,13 +138,40 @@ xtabs(~ gear + cyl, mtcars)
 if (FALSE)
 (p <- 
 
- yplot(data = mtcars, #subset(mtcars, gear != 4),
-      margin.vars = elist(gear = factor(gear), cyl = factor(cyl)),
-      panel.vars = elist(x = disp, y = mpg),
-      panel = ypanel.grid() + ypanel.xyplot(),
-      relation = list(x = "free", y = "free"),
-      xlab= "disp", ylab = "mpg")
-)
+    yplot(data = mtcars, #subset(mtcars, gear != 4),
+          margin.vars = elist(gear = factor(gear), cyl = factor(cyl)),
+          panel.vars = elist(x = disp, y = mpg),
+          panel = ypanel.grid() + ypanel.xyplot(),
+          relation = list(x = "free", y = "free"),
+          xlab= "disp", ylab = "mpg")
+
+ )
+
+## multiple plots
+
+uspe <- as.data.frame.table(USPersonalExpenditure)
+names(uspe) <- c("category", "year", "amount")
+
+p1 <- yplot(data = uspe,
+            margin.vars = elist(year),
+            panel.vars = elist(x = amount, y = category),
+            panel = ypanel.grid() + ypanel.xyplot(),
+            layout = c(1, 5),
+            alternating = list(y = 1))
+
+p2 <- yplot(data = uspe,
+            margin.vars = elist(year),
+            panel.vars = elist(x = log(amount), y = category),
+            panel = ypanel.grid() + ypanel.xyplot(),
+            layout = c(1, 5),
+            alternating = list(y = 1))
+
+plot(p1, position = list(x = 0, y = 0, w = 0.5, h = 1))
+plot(p2, position = list(x = 0.5, y = 0, w = 0.5, h = 1))
+
+
+
+## Built-in layers
 
 yplot(data = mtcars,
       margin.vars = elist(cyl = factor(cyl)),
