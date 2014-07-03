@@ -18,14 +18,15 @@ yrender <- function(f, switch_names = NULL)
 ## A "ylayer" object is a list of one or more such layers, that can be
 ## combined using "+.ylayer".
 
-ylayer <- function(setup = NULL, mapping, render, data = NULL, margin.vars=NULL, enclos=NULL)
+ylayer <- function(setup = NULL, mapping, render, data = NULL, margin.vars=NULL, panel.vars=NULL, enclos=NULL)
 {
     packets  <-
         if (is.null(data)) NULL
         else compute.packets(margin.vars,
                              data = data,
                              enclos = enclos)
-    structure(list(list(setup = setup, mapping = mapping, render = render, data = data, packets = packets)),
+    structure(list(list(setup = setup, mapping = mapping, render = render,
+                        panel.vars = panel.vars, data = data, packets = packets)),
               class = "ylayer")
 }
 

@@ -32,12 +32,16 @@ compute.limits <- function(panel, packets, ...)
             lapply(panel, function(layer)
                {
                    ## FIXME: Should allow for empty data (e.g., for reference grids), but not sure how.
-                   pargs <- panel.args # copy for this layer, different only if 'data' changes
+                   pargs <- panel.args # copy for this layer, different only if 'data' or 'panel.vars' changes
                    if (!is.null(layer$data))
                    {
                        stopifnot(identical(dim(layer$packets), dim(panel.args$packets)))
                        pargs$data <- layer$data
                        pargs$packets <- layer$packets
+                   }
+                   if (!is.null(layer$panel.vars))
+                   {
+                       pargs$panel.vars <- layer$panel.vars
                    }
                    do.call(yprepanel.super,
                            c(pargs, list(mapping = layer$mapping, which.packet = i)))

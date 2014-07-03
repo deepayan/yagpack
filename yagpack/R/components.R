@@ -318,12 +318,16 @@ yagp_page_render_panels <- function(x, page = 1, viewports = x$shared.env$viewpo
                        ## 'packets'.  In that case, we should use
                        ## them, but make sure they are compatible.
                        ## FIXME: Should allow for empty data (e.g., for reference grids), but not sure how.
-                       pargs <- panel.args # copy for this layer, different only if 'data' changes
+                       pargs <- panel.args # copy for this layer, different only if 'data' or 'panel.vars' changes
                        if (!is.null(layer$data))
                        {
                            stopifnot(identical(dim(layer$packets), dim(panel.args$packets)))
                            pargs$data <- layer$data
                            pargs$packets <- layer$packets
+                       }
+                       if (!is.null(layer$panel.vars))
+                       {
+                           pargs$panel.vars <- layer$panel.vars
                        }
                        do.call(ypanel.super,
                                c(list(mapping = layer$mapping, render = layer$render),

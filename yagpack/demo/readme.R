@@ -147,7 +147,7 @@ if (FALSE)
 
  )
 
-## multiple plots
+## multiple plots in single page
 
 uspe <- as.data.frame.table(USPersonalExpenditure)
 names(uspe) <- c("category", "year", "amount")
@@ -169,6 +169,63 @@ p2 <- yplot(data = uspe,
 plot(p1, position = list(x = 0, w = 0.5), new = TRUE)
 plot(p2, position = list(split = c(1,2,1,2)), new = FALSE)
 
+
+## Multiple data sources
+
+data(Oxboys, package = "nlme")
+library(nlme)
+fm.mixed <- lme(height ~ age + I(age^2), data = Oxboys, random =  ~1 | Subject)
+
+Oxboys$fitted <- fitted(fm.mixed)
+
+yplot(data = Oxboys, panel.vars = elist(x = age, y = height),
+      margin.vars = elist(Subject),
+      panel = ypanel.xyplot())
+
+fit.layer <- ylayer(mapping = map_points(), render = render_lines(col = "red"),
+                    panel.vars = elist(x = age, y = fitted))
+
+yplot(data = Oxboys, panel.vars = elist(x = age, y = height),
+      margin.vars = elist(Subject),
+      panel = ypanel.xyplot() + fit.layer)
+
+## More complicated setup: fitted values are in different dataset with
+## possibly different dimensions and even different names.
+
+Oxboys.fitted <-
+    with(Oxboys,
+         expand.grid(Subject = unique(Subject),
+                     age = seq(min(age), max(age), length.out = 51),
+                     KEEP.OUT.ATTRS = FALSE))
+
+Oxboys.fitted$height1 <- predict(fm.mixed, newdata = Oxboys.fitted)
+Oxboys.fitted$height0 <- predict(fm.mixed, newdata = Oxboys.fitted, level = 0)
+
+p <- 
+    yplot(data = Oxboys, panel.vars = elist(x = age, y = height),
+          margin.vars = elist(Subject),
+          panel = ypanel.xyplot())
+
+p$xargs$panel <- p$xargs$panel + ylayer(mapping = map_points(), render = render_lines(col = "red"),
+                                        panel.vars = elist(x = age, y = fitted),
+                                        margin.vars = elist(Subject),
+                                        data = Oxboys.fitted)
+
+p ## not working yet
+
+
+
+dataFrame <- data.frame(x = c(1, 2, 2, 3),
+                        y = c(1, 1, 2, 3),
+                        g1 = factor(c("A", "B", "A", "B")),
+                        g2 = factor(c("B", "A", "A", "B")))
+
+p <- yplot(data = dataFrame, 
+           panel.vars = elist(x = x, y = y, groups = g1),
+           panel = ylayer(mapping = map_points(), render = render_lines()) +
+                   ylayer(mapping = map_points(), render = render_lines(), 
+                       panel.vars = elist(x = x, y = y, groups = g2)))
+p              
 
 
 ## Built-in layers
