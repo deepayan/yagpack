@@ -166,8 +166,8 @@ p2 <- yplot(data = uspe,
             layout = c(1, 5),
             alternating = list(y = 1))
 
-plot(p1, position = list(x = 0, y = 0, w = 0.5, h = 1))
-plot(p2, position = list(x = 0.5, y = 0, w = 0.5, h = 1))
+plot(p1, position = list(x = 0, w = 0.5), new = TRUE)
+plot(p2, position = list(split = c(1,2,1,2)), new = FALSE)
 
 
 

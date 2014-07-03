@@ -107,16 +107,42 @@ yplot <-
 ## plot method
 
 
-
+##' Plot a yagp object
+##'
+##' .. content for \details{} ..
+##' @title 
+##' @param x An object of class \code{"yagp"}.
+##' @param page A vector specifying which page(s) to draw, for
+##' multi-page plots.
+##' @param primitives An environment containing the primitives to use,
+##' or a function that returns such an environment.  By default,
+##' \code{.yagpenv$backend} is used.
+##' @param ... Further arguments, passed on to \code{\link{yagp_page}}.
+##' @param new Logical flag to control whether the plot should start a new page.
+##' @param draw_labels Logical flag to control whether labels are to be drawn.
+##' @param draw_panels Logical flag to control whether panels are to be drawn.
+##' @param draw_strips Logical flag to control whether strips are to be drawn.
+##' @param draw_axes Logical flag to control whether axes are to be drawn.
+##' @param position A list specifying the position of a viewport
+##' inside the main figure region (root viewport) where the object is
+##' to be drawn.  The viewport is most generally specified in terms of
+##' the location of the top-left corner (\code{x}, \code{y}) and width
+##' (\code{w}) and height (\code{h}) assuming a coordinate system with
+##' range [0, 1] on both axes.  Alternatively, \code{split} specified
+##' in the form \code{c(row, column, nrow, ncol)} can be used to
+##' specify the position as a cell in a  matrix.
+##' @return NULL
+##' @author Deepayan Sarkar
 plot.yagp <-
     function(x, page = 1,
              primitives = NULL,
              ...,
+             new = TRUE,
              draw_labels = TRUE,
              draw_panels = TRUE,
              draw_strips = TRUE,
              draw_axes = TRUE,
-             position = list(x = 0, y = 0, h = 1, w = 1))
+             position = list(x = 0, y = 0, h = 1, w = 1, split = NULL))
 {
     x$panel.layout <- compute.layout(x$layout, dim(x$xargs$packets), skip = x$skip)
     packet.limits <- checkArgsAndCall(compute.limits, x$xargs)
@@ -134,11 +160,25 @@ plot.yagp <-
     a <- attr(attach(primitives), "name")
     on.exit(detach(a, character.only = TRUE))
     context <- tget_context()
-    
-
+    computePosition <- function(x = 0, y = 0, h = 1, w = 1, split = NULL)
+    {
+        if (is.null(split)) {
+            list(x = x, y = y, w = w, h = h)
+        }
+        else {
+            ## split = (i, j, m, n) : put in (i,j) cell of mxn matrix
+            if (length(split) != 4) stop("'split' must have the form c(row, column, nrow, ncol).")
+            if (split[1] < 1 || split[1] > split[3]) stop("Invalid row position in 'split'.")
+            if (split[2] < 1 || split[2] > split[4]) stop("Invalid column position in 'split'.")
+            list(x = (split[2] - 1) / split[4],
+                 y = (split[1] - 1) / split[3],
+                 w = 1 / split[4], h = 1 / split[3])
+        }
+    }
+    position <- do.call(computePosition, position)
     for (p in page)
     {
-        yagp_page(x, page = p, ...,
+        yagp_page(x, page = p, ..., new = new,
                   draw_labels = draw_labels,
                   draw_panels = draw_panels,
                   draw_strips = draw_strips,
@@ -147,6 +187,7 @@ plot.yagp <-
                                  x = position$x, y = position$y,
                                  w = position$w, h = position$h))
     }
+    invisible()
 }
 
 
