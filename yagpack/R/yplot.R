@@ -100,7 +100,7 @@ yplot <-
               xargs = xargs,
               shared.env = shared.env, # also in xargs
               ...)
-    class(x) <- "yagp"
+    class(x) <- c("yagp", "ylayer")
     x
 }
 

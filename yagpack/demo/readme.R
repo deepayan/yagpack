@@ -206,26 +206,22 @@ p <-
           margin.vars = elist(Subject),
           panel = ypanel.xyplot())
 
-p$xargs$panel <- p$xargs$panel + ylayer(mapping = map_points(), render = render_lines(col = "red"),
-                                        panel.vars = elist(x = age, y = fitted),
-                                        margin.vars = elist(Subject),
-                                        data = Oxboys.fitted)
+p$xargs$panel <-
+    (p$xargs$panel 
+     + ylayer(mapping = map_points(), render = render_lines(col = "red"),
+              panel.vars = elist(x = age, y = height0),
+              margin.vars = elist(Subject),
+              data = Oxboys.fitted))
 
-p ## not working yet
+p
 
+## Syntantic sugar: p + layer also works
+     
+p + ylayer(mapping = map_points(), render = render_lines(col = "blue"),
+           panel.vars = elist(x = age, y = height1),
+           margin.vars = elist(Subject),
+           data = Oxboys.fitted)
 
-
-dataFrame <- data.frame(x = c(1, 2, 2, 3),
-                        y = c(1, 1, 2, 3),
-                        g1 = factor(c("A", "B", "A", "B")),
-                        g2 = factor(c("B", "A", "A", "B")))
-
-p <- yplot(data = dataFrame, 
-           panel.vars = elist(x = x, y = y, groups = g1),
-           panel = ylayer(mapping = map_points(), render = render_lines()) +
-                   ylayer(mapping = map_points(), render = render_lines(), 
-                       panel.vars = elist(x = x, y = y, groups = g2)))
-p              
 
 
 ## Built-in layers
@@ -235,7 +231,6 @@ yplot(data = mtcars,
       panel.vars = elist(x = disp, y = mpg),
       panel = ypanel.grid() + ypanel.xyplot() + ypanel.loess(degree = 0))
 
-
 yplot(data = mtcars,
       panel.vars = elist(x = disp, y = mpg, color = factor(gear)),
       panel = ypanel.grid() + ypanel.xyplot() + ypanel.loess(evaluation = 200),
@@ -243,32 +238,26 @@ yplot(data = mtcars,
 
 yplot(data = mtcars,
       panel.vars = elist(x = disp, y = mpg, groups = factor(gear), color = hp),
-      panel = ypanel.grid() + ypanel.xyplot() + ypanel.loess(evaluation = 200),
-      prepanel = function(x, y, ...) default.limits(x, y))
+      panel = ypanel.grid() + ypanel.xyplot() + ypanel.loess(evaluation = 200))
 
 yplot(data = mtcars,
       panel.vars = elist(x = disp, y = mpg, groups = factor(gear)),
       panel = (ypanel.grid(h = -1, v = -1) +
                ylayer(mapping = map_points(mapcolor = TRUE),
-                      render = render_xy(type = "S") + render_xy(type = "p"))))
+                      render = render_xy(type = "l") + render_xy(type = "p"))))
 
 yplot(data = mtcars,
       panel.vars = elist(x = disp, y = mpg, groups = factor(gear)),
-      panel = ypanel.grid() + ypanel.xyplot(mapcolor = TRUE) + ypanel.lm(degree = 2),
-      xlab= "disp", ylab = "mpg")
+      panel = ypanel.grid() + ypanel.xyplot(mapcolor = TRUE) + ypanel.lm(degree = 2))
 
 yplot(data = iris,
       panel.vars = elist(x = Petal.Length, y = Petal.Width, groups = Species),
-      panel = ypanel.grid() + ypanel.xyplot(jitter.y = TRUE) + ypanel.lm(degree = 1),
-      xlab= "disp", ylab = "mpg",
-      prepanel = function(x, y, ...) default.limits(x, y))
+      panel = ypanel.grid() + ypanel.xyplot(jitter.y = TRUE) + ypanel.lm(degree = 1))
 
 yplot(data = iris,
       margin.vars = ~Species,
       panel.vars = elist(x = Petal.Length, y = Petal.Width),
-      panel = ypanel.grid() + ypanel.xyplot(jitter.y = TRUE) + ypanel.lm(degree = 1),
-      xlab= "disp", ylab = "mpg",
-      prepanel = function(x, y, ...) default.limits(x, y))
+      panel = ypanel.grid() + ypanel.xyplot(jitter.y = TRUE) + ypanel.lm(degree = 1))
 
 yplot(data = iris,
       panel.vars = elist(x = Petal.Length, groups = Species),
