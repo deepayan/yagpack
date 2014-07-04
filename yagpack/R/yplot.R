@@ -268,38 +268,50 @@ print.summary.yagp <- function(x, ...)
 
 dim.yagp <- function(x)
 {
-    dim(x$packets)
+    dim(x$xargs$packets)
 }
 
 
 dimnames.yagp <- function(x)
 {
-    dimnames(x$packets)
+    dimnames(x$xargs$packets)
 }
 
 
 "dimnames<-.yagp" <- 
     function (x, value)
 {
-    dimnames(x$packets) <- value
+    dimnames(x$xargs$packets) <- value
     x
 }
 
-## "[.yagp" <- function(x, i, j, ..., drop = FALSE)
-## {
-##     if (!missing(drop) && drop)
-##         warning("'drop=TRUE' ignored")
-##     indices <- rep(list(TRUE), length.out = length(dim(x)))
-##     if (!missing(i)) {
-##         indices[[1]] <- i
-##     }
-##     if (!missing(j)) {
-##         indices[[2]] <- j
-##     }
-##     x$packets <- do.call("[", c(list(x$packets), indices, list(drop = drop)))
-##     ## x$packets <- x$packets[i, j, ..., drop = FALSE]
-##     x
-## }
+"[.yagp" <- function(x, i, j, ..., drop = FALSE)
+{
+    if (!missing(drop) && drop)
+        warning("'drop=TRUE' ignored")
+    indices <- rep(list(TRUE), length.out = length(dim(x)))
+    if (!missing(i)) {
+        indices[[1]] <- i
+    }
+    if (!missing(j)) {
+        indices[[2]] <- j
+    }
+    x$xargs$packets <- do.call("[", c(list(x$xargs$packets), indices, list(drop = drop)))
+    ## x$xargs$packets <- x$xargs$packets[i, j, ..., drop = FALSE]
+    x
+}
+
+update.yagp <- function(object, ...)
+{
+    ## FIXME: very basic, no error checking
+    dots <- list(...)
+    for (i in names(dots))
+    {
+        if (i %in% names(object)) object[[i]] <- dots[[i]]
+        else if (i %in% names(object$xargs)) object$xargs[[i]] <- dots[[i]]
+    }
+    object
+}
 
 
 

@@ -29,8 +29,8 @@ yabline <-
              reg = NULL, coef = NULL,
              ...,
              reference = FALSE,
-             col = if (reference) .yagpenv$theme$reference$col
-                   else .yagpenv$theme$add.line$col,
+             col = if (reference) yagp.theme()$reference$col
+                   else yagp.theme()$add.line$col,
              vp)
 {
     if (!is.null(h) || !is.null(v))

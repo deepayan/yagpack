@@ -21,7 +21,7 @@ densityplot <-
     function(x, data, enclos, weights = NULL, groups = NULL, 
              legend = auto.legend("l", panel.vars, data = data, enclos = enclos, more.args = legend.args),
              legend.args = list(),
-             panel = ypanel.density(), ref = TRUE, plot.points = "jitter")
+             panel = ypanel.density(), ref = TRUE, plot.points = "jitter", ...)
 {
     panel.vars <- panel.terms(list(x = substitute(x), weights = substitute(weights), groups = substitute(groups)))
     margin.vars <- attr(panel.vars, "margin")

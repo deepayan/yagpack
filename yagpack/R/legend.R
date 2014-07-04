@@ -1,7 +1,7 @@
 
 yagp.key <-
     function(text,
-             type = c("p", "l", "b", "n"), # points/lines/none
+             type = c("p", "l", "b", "n"), # points/lines/both/none
              bg = "transparent", border = "transparent", # for rectangles
              title = NULL,
              lwd = 1, lty = 1,

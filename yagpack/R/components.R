@@ -24,12 +24,20 @@ yagp.strip.horizontal <-
                function(w) {
                    as.character(margin.combs[which.packet, w])
                })
-    strip_label <- paste(labs, collapse = "\n")
-    if (give.extent) return(list(w = -1, h = tstrheight(strip_label)))
+    ## strip_label <- paste(labs, collapse = "\n")
+    if (give.extent) return(list(w = -1, h = sum(tstrheight(labs) + 2) ))
     tclip(vp)
     on.exit(tunclip(vp))
-    tessella.fill(col = col, fill = fill, vp = vp)
-    ttext(mean(vp$xlim), mean(vp$ylim), strip_label, vp = vp)
+    npcvp <- tviewport(vp)
+    nlabs <- length(labs)
+    for (i in seq_len(nlabs))
+    {
+        svp <- tviewport(npcvp, y = (i-1)/nlabs, h = 1/nlabs)
+        tessella.fill(col = col, fill = fill, vp = svp)
+        ttext(0.5, 0.5, labs[i], vp = svp)
+    }
+    ## tessella.fill(col = col, fill = fill, vp = vp)
+    ## ttext(mean(vp$xlim), mean(vp$ylim), strip_label, vp = vp)
 }
 
 
