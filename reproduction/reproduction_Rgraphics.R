@@ -1,7 +1,6 @@
 # TODO why can't you specify pch in ypanel.xyplot?
  
 
-
 library(RColorBrewer)
 library(tessella)
 library(yagpack) ## source.pkg("yagpack")
@@ -10,7 +9,7 @@ x11()
 
 
 
-# Scatterplot
+# Figure 1.1 Scatterplot
 data(pressure)
 p <- yplot(data = pressure,
     panel.vars = elist(x = temperature, y = pressure),
@@ -32,8 +31,7 @@ p <- yplot(data = pressure,
     pch = 19, xlab = "Temp (Celcius)", ylab = "Pressure (mm Hg)")
 
 # TODO
-text(150, 600, "Pressure (mm Hg) \nversus \nTemperature (Celsius)")
-
+# text(150, 600, "Pressure (mm Hg) \nversus \nTemperature (Celsius)")
 
 
 # directly
@@ -46,45 +44,39 @@ p <- yplot(data = pressure,
 p
 
 
-
-
-
-
-
-# Histogram
-x <- rnorm(100)
-x <- as.data.frame(x)
-densObj <- density(x$x, bw=0.5)
+# Figure 1.2 Histogram
+pointsDf <- data.frame(x = rnorm(100))
+densObj <- density(pointsDf$x, bw=0.5)
 densDf <- data.frame(x = densObj$x, y = 67 * densObj$y)
 
-histogram(x, data=x, freq=FALSE)
-yplot(data=x, 
+histogram(x, data=pointsDf, freq=FALSE)
+
+yplot(data=pointsDf, 
     panel.vars=elist(x=x),
     panel=ypanel.histogram())
 
-# does work
-yplot(data=x, 
-    panel.vars=elist(x=x),
-    panel=ypanel.histogram() + 
-        ylayer(mapping = map_null(),
-            render = render_lines(x = densObj$x, y = 67* densObj$y, lwd = 3, col = "blue")),
-    main = "Histogram of Y", xlab = "Y", ylab = "Density"
-)
-
-# does not work
-yplot(data=x, 
-    panel.vars=elist(x=x),
-    panel=ypanel.histogram() + 
-        ylayer(mapping = map_points(),
+# OK
+yplot(data = pointsDf, 
+    panel.vars = elist(x = x),
+    panel = ypanel.histogram() + 
+        ylayer(panel.vars = elist(x = x, y = y),
+            mapping = map_points(),
             render = render_lines(lwd = 3, col = "blue"),
             data = densDf),
     main = "Histogram of Y", xlab = "Y", ylab = "Density"
 )
 
+# also works
+yplot(data = pointsDf, 
+    panel.vars = elist(x=x),
+    panel = ypanel.histogram() + 
+        ylayer(mapping = map_null(),
+            render = render_lines(x = densObj$x, y = 67* densObj$y, lwd = 3, col = "blue")),
+    main = "Histogram of Y", xlab = "Y", ylab = "Density"
+)
 
-
-
-
+# TODO how to appropriately scale the histogram, 
+#      need for a freq argument in histogram similarly to hist(., freq=FALSE) in base graphics?
 yplot(data=x, 
     panel.vars=elist(x=x),
     panel=ypanel.histogram() + ypanel.density(),
@@ -92,23 +84,7 @@ yplot(data=x,
 )
 
 
-#yplot(data=x, 
-#    panel.vars=elist(x=x),
-#    panel=ypanel.histogram() + 
-#        ylayer(mapping = map_null(),
-#            render = render_lines(lwd = 3, col = "blue"),
-#            data=densObj) 
-#)
-# TODO how to hand densObj to ylayer
-# TODO how to appropriately scale the histogram, freq=FALSE does not work
-
-
-
-
-
-
-
-# Two-Line Scatter
+# Figure 1.2 Two-Line Scatter
 x1 <- 1:5; y1 <- 2*x1
 y2 <- rep(5, 5)
 data1 <- cbind.data.frame(x1, y1)
@@ -129,8 +105,9 @@ p <- yplot(data = data1,
         data = data2),
     xlab = "X", ylab = "Y", pch=19)
 p
-# TODO see bottom of user guide "advanced"
 
+
+# TODO use theme for custom colors of lines and dots
 data3 <- cbind.data.frame(x=c(x1, x1), y=c(y1, y2))
 data3$groups <- rep(c(1, 2), each = 5)
 p <- yplot(data = data3,
@@ -138,7 +115,6 @@ p <- yplot(data = data3,
     panel = ypanel.xyplot(),
     xlab = "X", ylab = "Y", pch=19, type="b", col=c("orange", "red"))
 p
-# TODO how to define the colors by group (Figure 1.2)
 
 
 p <- yplot(data = data1,
@@ -150,9 +126,8 @@ p
 
 
 
-
-
-# barley example
+# Figure 1.4 barley example
+# TODO huge space foreseen for legend
 data(barley, package = "lattice")
 
 dotplot(yield, variety, 
@@ -165,7 +140,7 @@ dotplot(yield, variety,
 
 
 
-# regression diagnostics (R Graphics 2.2)
+# Figure 2.2 regression diagnostics
 data(cars)
 model <- lm(log(dist) ~ log(speed), data=cars)
 cars$res <- model$res
@@ -179,11 +154,7 @@ p <- yplot(data = cars,
         ypanel.abline(h = 0, col = gray(0.5), lwd = 2, lty = 2),
     pch = 19, xlab = "Fitted Values", ylab = "Residuals")
 p
-# TODO how to make side-by-side plots
-
-
-
-
+# TODO make side-by-side plots using plot(., position = .)
 
 
 
