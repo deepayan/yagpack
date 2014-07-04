@@ -10,43 +10,86 @@
 ## environment to a backend-specific environment that contains the
 ## suitable primitives.
 
+
+##' High-level function to produce a plot object.
+##'
+##' .. content for \details{} ..
+##' @title Create a plot object
+##' @param data The data source, usually a \code{"data.frame"} object.
+##' @param enclos The enclosing environment.  See \code{\link{eval}}.
+##' @param margin.vars List of expressions, possibly named, resolving
+##' to variables that are to be used as conditioning or faceting
+##' variables.  Usually produced by \code{\link{elist}} or
+##' \code{\link{margin.terms}}.
+##' @param layout Integer vector of length 2 or 3, giving the number
+##' of (rows, columns) or (rows, column, pages) into which the panels
+##' are to be arranged.
+##' @param skip Logical vector, replicated as necessary, giving the
+##' positions of panels that are to be skipped.
+##' @param packets A list array with margins compatible with
+##' \code{margin.vars}, with each component giving the indices to the
+##' full dataset (more generally, a valid \code{subset} argument to
+##' \code{\link{evaluate}}).
+##' @param panel.vars List of named expressions resolving to variables
+##' that are to be used by panel layers (through the names, so the
+##' names must match those expected by the corresponding layers).
+##' Usually produced by \code{\link{elist}}.
+##' @param panel A \code{"ylayer"} object, which is essentially a list
+##' of layers.  See \code{\link{ylayer}} and \code{\link{"+.ylayer"}}.
+##' @param relation List with possible components \code{x} and
+##' \code{y}, each a character string specifying how limits should be
+##' combined across panels: \code{"same"} for common limits,
+##' \code{"free"} for separate per-panel limits).
+##' @param alternating List with possible components \code{x} and
+##' \code{y}, each an integer vector, recycled if necessary to match
+##' rows and columns, specifying how axes tick marks should be labeled
+##' on a per-row or per-column basis: \code{1} means left/bottom,
+##' \code{2} means right/top, and \code{3} means both.  For example,
+##' \code{c(1, 2)} will lead to alternating on alternating sides.
+##' @param scales List with possible components \code{x} and \code{y},
+##' with components controlling the details of axis annotation such as
+##' number of ticks, etc.  Currently ignored.
+##' @param switch.axes Logical indicating whether the axes are to be
+##' switched.  This feature works only if supported by panel layers.
+##' @param aspect The aspect ratio.
+##' @param xlim Range for the x-axis.
+##' @param ylim Range for the y-axis.
+##' @param xlab X-axis label.
+##' @param ylab Y-axis label.
+##' @param main Main title.
+##' @param sub Subtitle.
+##' @param theme A theme, typically produced by \code{\link{yagp.theme}}.
+##' @param legend A legend.
+##' @param ... Further arguments, stored in the \code{xargs} component of the result.
+##' @return A list with class \code{c("yagp", "ylayer")} containing
+##' the information passed to the function after some minimal processing.
+##' @author Deepayan Sarkar
 yplot <-
     function(data = environment(), enclos = .GlobalEnv,
              margin.vars = list(),
              layout = NULL, skip = FALSE,
-
-             ## perhaps useful for predefined packets; multiple data sources
-             packets = compute.packets(margin.vars,
+             packets = compute.packets(margin.vars, # perhaps useful for predefined packets; multiple data sources
                                        data = data,
                                        enclos = enclos),
-             
-             panel.vars, panel, ## prepanel,
-
-             ## specify how limits are combined
-             relation = list(),
-
-             ## specify how to alternate labels
-             alternating = list(),
-
-             ## scales.  FIXME: do some combining _a la_ lattice
-
+             panel.vars = NULL, panel = list(), ## prepanel,
+             relation = list(), # how to combine limits
+             alternating = list(), # how to alternate labels
              scales = list(x = list(tick.number = 5, font = 1, tck = 1, rot = 0),
                            y = list(tick.number = 5, font = 1, tck = 1, rot = 0)),
              switch.axes = FALSE,
              aspect = NULL,
-
              xlim = NULL, ylim = NULL,
              xlab = shared.env$setup$xlab,
              ylab = shared.env$setup$ylab,
              main = NULL, sub = NULL,
-
              theme = yagp.theme(),
              legend = NULL,
-
              ...)
 {
-
-    ## an environment to store shared information, notably axis
+    
+    ## FIXME: do some combining of scales _a la_ lattice.
+    
+    ## An environment to store shared information, notably axis
     ## limits.  All panel, axis functions, etc. have access to this.
     ## Panel functions (but not prepanel functions) also have access
     ## to a panel-specific environment 'panel.env'
@@ -107,10 +150,10 @@ yplot <-
 ## plot method
 
 
-##' Plot a yagp object
+##' Plot method for yagp objects.
 ##'
 ##' .. content for \details{} ..
-##' @title 
+##' @title Plot yagp objects
 ##' @param x An object of class \code{"yagp"}.
 ##' @param page A vector specifying which page(s) to draw, for
 ##' multi-page plots.
@@ -192,7 +235,6 @@ plot.yagp <-
 
 
 
-
 print.yagp <- function(x, ...)
 {
     plot(x, ...)
@@ -261,97 +303,3 @@ dimnames.yagp <- function(x)
 
 
 
-
-
-## high-level convenience functions
-
-xyplot <- yplot_xy <- 
-    function(x, y = NULL, data, enclos, groups = NULL, color = NULL, size = NULL,
-             legend = auto.legend("p", panel.vars, data = data, enclos = enclos, more.args = legend.args),
-             legend.args = list(),
-             panel = ypanel.xyplot(), 
-             ...)
-{
-    panel.vars <- panel.terms(list(x = substitute(x), y = substitute(y), groups = substitute(groups), color = substitute(color), size = substitute(size)))
-    if (missing(data)) data <- parent.frame()
-    if (missing(enclos)) enclos <- parent.frame()
-    yplot(data = data, enclos = enclos, panel.vars = panel.vars, panel = panel, legend = legend, ...)
-}
-
-densityplot <- yplot_density <- 
-    function(x, data, enclos, weights = NULL, groups = NULL, 
-             legend = auto.legend("l", panel.vars, data = data, enclos = enclos, more.args = legend.args),
-             legend.args = list(),
-             panel = ypanel.density(), ...)
-{
-    panel.vars <- panel.terms(list(x = substitute(x), weights = substitute(weights), groups = substitute(groups)))
-    if (missing(data)) data <- parent.frame()
-    if (missing(enclos)) enclos <- parent.frame()
-    yplot(data = data, enclos = enclos, panel.vars = panel.vars, panel = panel, legend = legend, ...)
-}
-
-qqmath <- yplot_qqmath <- 
-    function(x, data, enclos, groups = NULL, 
-             legend = auto.legend("p", panel.vars, data = data, enclos = enclos, more.args = legend.args),
-             legend.args = list(),
-             panel = ypanel.qqmath(), ...)
-{
-    panel.vars <- panel.terms(list(x = substitute(x), groups = substitute(groups)))
-    if (missing(data)) data <- parent.frame()
-    if (missing(enclos)) enclos <- parent.frame()
-    yplot(data = data, enclos = enclos, panel.vars = panel.vars, panel = panel, legend = legend, ...)
-}
-
-histogram <- yplot_hist <- 
-    function(x, data, enclos, weights = NULL, groups = NULL,
-             legend = auto.legend("r", panel.vars, data = data, enclos = enclos, more.args = legend.args),
-             legend.args = list(),
-             panel = ypanel.histogram(), ...)
-{
-    panel.vars <- panel.terms(list(x = substitute(x), weights = substitute(weights), groups = substitute(groups)))
-    if (missing(data)) data <- parent.frame()
-    if (missing(enclos)) enclos <- parent.frame()
-    yplot(data = data, enclos = enclos, panel.vars = panel.vars, panel = panel, legend = legend, ...)
-}
-
-dotplot <- yplot_dot <- yplot_xy
-
-
-bwplot <- yplot_bw <- 
-    function(x, y = NULL, data, enclos, groups = NULL, 
-             legend = auto.legend("b", panel.vars, data = data, enclos = enclos, more.args = legend.args),
-             legend.args = list(),
-             panel = ypanel.boxplot(), ...)
-{
-    panel.vars <- panel.terms(list(x = substitute(x), y = substitute(y), groups = substitute(groups)))
-    if (missing(data)) data <- parent.frame()
-    if (missing(enclos)) enclos <- parent.frame()
-    yplot(data = data, enclos = enclos, panel.vars = panel.vars, panel = panel, legend = legend, ...)
-}
-
-barchart <- yplot_bar <- 
-    function(x, y = NULL, data, enclos, groups = NULL, 
-             legend = auto.legend("r", panel.vars, data = data, enclos = enclos, more.args = legend.args),
-             legend.args = list(),
-             panel = ypanel.barchart(), ...)
-{
-    panel.vars <- panel.terms(list(x = substitute(x), y = substitute(y), groups = substitute(groups)))
-    if (missing(data)) data <- parent.frame()
-    if (missing(enclos)) enclos <- parent.frame()
-    yplot(data = data, enclos = enclos, panel.vars = panel.vars, panel = panel, legend = legend, ...)
-}
-
-
-
-## maps
-
-
-## yagp.mapplot <- yplot_map <- 
-##     function(x, y = NULL, data, enclos, 
-##              panel = ypanel.mapplot, ...)
-## {
-##     panel.vars <- panel.terms(list(x = substitute(x), y = substitute(y)))
-##     if (missing(data)) data <- parent.frame()
-##     if (missing(enclos)) enclos <- parent.frame()
-##     yplot(data = data, enclos = enclos, panel.vars = panel.vars, panel = panel, ...)
-## }

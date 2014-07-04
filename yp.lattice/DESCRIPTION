@@ -1,0 +1,8 @@
+Package: yp.lattice
+Version: 0.0-1
+Title: Lattice compatibility layer for yagpack
+Author: Deepayan Sarkar
+Depends: yagpack
+Maintainer: Deepayan Sarkar <deepayan.sarkar@gmail.com>
+Description: Some lattice functions implemented using yagpack 
+License: GPL-3

@@ -62,7 +62,7 @@ margin.terms <- function(x, sep = as.symbol("+"))
 ## formula (only when specified as such, as otherwise substitute won't
 ## know (we don't want to evaluate anything here))
 
-panel.terms <- function(x, tilde = as.symbol("~"))
+panel.terms <- function(x, tilde = as.symbol("~"), bar = as.symbol("|"))
 {
     ans <- lapply(x, as.expression)
     x <- x[[1]] ## overrides 'x' and possibly 'y' if this is a formula (has a ~)
@@ -75,6 +75,17 @@ panel.terms <- function(x, tilde = as.symbol("~"))
         {
             formula.terms$x <- as.expression(x[[3]])
             formula.terms$y <- as.expression(x[[2]])
+        }
+        ## If the formula had the form y ~ x | a, then formula.terms$x[[1]]
+        ## is now x | a.  We want to check for this case and separate the
+        ## LHS (as x) and RHS (as the margin variables).
+        formx <- formula.terms$x[[1]]
+        if ((length(formx) == 3) && (formx[[1]] == bar)) 
+        {
+            formula.terms$x <- as.expression(formx[[2]])
+            margin <- formx[c(1, 3)]
+            margin[[1]] <- tilde
+            attr(ans, "margin") <- margin.terms(as.formula(margin))
         }
     }
     ans[names(formula.terms)] <- formula.terms
