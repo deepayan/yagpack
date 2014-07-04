@@ -138,19 +138,98 @@ xtabs(~ gear + cyl, mtcars)
 if (FALSE)
 (p <- 
 
- yplot(data = mtcars, #subset(mtcars, gear != 4),
-      margin.vars = elist(gear = factor(gear), cyl = factor(cyl)),
-      panel.vars = elist(x = disp, y = mpg),
-      panel = ypanel.grid() + ypanel.xyplot(),
-      relation = list(x = "free", y = "free"),
-      xlab= "disp", ylab = "mpg")
-)
+    yplot(data = mtcars, #subset(mtcars, gear != 4),
+          margin.vars = elist(gear = factor(gear), cyl = factor(cyl)),
+          panel.vars = elist(x = disp, y = mpg),
+          panel = ypanel.grid() + ypanel.xyplot(),
+          relation = list(x = "free", y = "free"),
+          xlab= "disp", ylab = "mpg")
+
+ )
+
+## multiple plots in single page
+
+uspe <- as.data.frame.table(USPersonalExpenditure)
+names(uspe) <- c("category", "year", "amount")
+
+p1 <- yplot(data = uspe,
+            margin.vars = elist(year),
+            panel.vars = elist(x = amount, y = category),
+            panel = ypanel.grid() + ypanel.xyplot(),
+            layout = c(1, 5),
+            alternating = list(y = 1))
+
+p2 <- yplot(data = uspe,
+            margin.vars = elist(year),
+            panel.vars = elist(x = log(amount), y = category),
+            panel = ypanel.grid() + ypanel.xyplot(),
+            layout = c(1, 5),
+            alternating = list(y = 1))
+
+plot(p1, position = list(x = 0, w = 0.5), new = TRUE)
+plot(p2, position = list(split = c(1,2,1,2)), new = FALSE)
+
+
+## Multiple data sources
+
+data(Oxboys, package = "nlme")
+library(nlme)
+fm.mixed <- lme(height ~ age + I(age^2), data = Oxboys, random =  ~1 | Subject)
+
+Oxboys$fitted <- fitted(fm.mixed)
+
+yplot(data = Oxboys, panel.vars = elist(x = age, y = height),
+      margin.vars = elist(Subject),
+      panel = ypanel.xyplot())
+
+fit.layer <- ylayer(mapping = map_points(), render = render_lines(col = "red"),
+                    panel.vars = elist(x = age, y = fitted))
+
+yplot(data = Oxboys, panel.vars = elist(x = age, y = height),
+      margin.vars = elist(Subject),
+      panel = ypanel.xyplot() + fit.layer)
+
+## More complicated setup: fitted values are in different dataset with
+## possibly different dimensions and even different names.
+
+Oxboys.fitted <-
+    with(Oxboys,
+         expand.grid(Subject = unique(Subject),
+                     age = seq(min(age), max(age), length.out = 51),
+                     KEEP.OUT.ATTRS = FALSE))
+
+Oxboys.fitted$height1 <- predict(fm.mixed, newdata = Oxboys.fitted)
+Oxboys.fitted$height0 <- predict(fm.mixed, newdata = Oxboys.fitted, level = 0)
+
+p <- 
+    yplot(data = Oxboys, panel.vars = elist(x = age, y = height),
+          margin.vars = elist(Subject),
+          panel = ypanel.xyplot())
+
+p$xargs$panel <-
+    (p$xargs$panel 
+     + ylayer(mapping = map_points(), render = render_lines(col = "red"),
+              panel.vars = elist(x = age, y = height0),
+              margin.vars = elist(Subject),
+              data = Oxboys.fitted))
+
+p
+
+## Syntantic sugar: p + layer also works
+     
+p + ylayer(mapping = map_points(), render = render_lines(col = "blue"),
+           panel.vars = elist(x = age, y = height1),
+           margin.vars = elist(Subject),
+           data = Oxboys.fitted)
+
+
+
+## Built-in layers
 
 yplot(data = mtcars,
       margin.vars = elist(cyl = factor(cyl)),
       panel.vars = elist(x = disp, y = mpg),
       panel = ypanel.grid() + ypanel.xyplot() + ypanel.loess(degree = 0))
-
 
 yplot(data = mtcars,
       panel.vars = elist(x = disp, y = mpg, color = factor(gear)),
@@ -159,32 +238,26 @@ yplot(data = mtcars,
 
 yplot(data = mtcars,
       panel.vars = elist(x = disp, y = mpg, groups = factor(gear), color = hp),
-      panel = ypanel.grid() + ypanel.xyplot() + ypanel.loess(evaluation = 200),
-      prepanel = function(x, y, ...) default.limits(x, y))
+      panel = ypanel.grid() + ypanel.xyplot() + ypanel.loess(evaluation = 200))
 
 yplot(data = mtcars,
       panel.vars = elist(x = disp, y = mpg, groups = factor(gear)),
       panel = (ypanel.grid(h = -1, v = -1) +
                ylayer(mapping = map_points(mapcolor = TRUE),
-                      render = render_xy(type = "S") + render_xy(type = "p"))))
+                      render = render_xy(type = "l") + render_xy(type = "p"))))
 
 yplot(data = mtcars,
       panel.vars = elist(x = disp, y = mpg, groups = factor(gear)),
-      panel = ypanel.grid() + ypanel.xyplot(mapcolor = TRUE) + ypanel.lm(degree = 2),
-      xlab= "disp", ylab = "mpg")
+      panel = ypanel.grid() + ypanel.xyplot(mapcolor = TRUE) + ypanel.lm(degree = 2))
 
 yplot(data = iris,
       panel.vars = elist(x = Petal.Length, y = Petal.Width, groups = Species),
-      panel = ypanel.grid() + ypanel.xyplot(jitter.y = TRUE) + ypanel.lm(degree = 1),
-      xlab= "disp", ylab = "mpg",
-      prepanel = function(x, y, ...) default.limits(x, y))
+      panel = ypanel.grid() + ypanel.xyplot(jitter.y = TRUE) + ypanel.lm(degree = 1))
 
 yplot(data = iris,
       margin.vars = ~Species,
       panel.vars = elist(x = Petal.Length, y = Petal.Width),
-      panel = ypanel.grid() + ypanel.xyplot(jitter.y = TRUE) + ypanel.lm(degree = 1),
-      xlab= "disp", ylab = "mpg",
-      prepanel = function(x, y, ...) default.limits(x, y))
+      panel = ypanel.grid() + ypanel.xyplot(jitter.y = TRUE) + ypanel.lm(degree = 1))
 
 yplot(data = iris,
       panel.vars = elist(x = Petal.Length, groups = Species),

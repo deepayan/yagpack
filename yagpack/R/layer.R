@@ -18,21 +18,30 @@ yrender <- function(f, switch_names = NULL)
 ## A "ylayer" object is a list of one or more such layers, that can be
 ## combined using "+.ylayer".
 
-ylayer <- function(setup = NULL, mapping, render, data = NULL, margin.vars=NULL, enclos=NULL)
+## As a convenience, a "yagp" plot object and a layer can also be `added'.
+
+ylayer <- function(setup = NULL, mapping, render, data = NULL, margin.vars = NULL, panel.vars = NULL, enclos = NULL)
 {
     packets  <-
         if (is.null(data)) NULL
         else compute.packets(margin.vars,
                              data = data,
                              enclos = enclos)
-    structure(list(list(setup = setup, mapping = mapping, render = render, data = data, packets = packets)),
+    structure(list(list(setup = setup, mapping = mapping, render = render,
+                        panel.vars = panel.vars, data = data, packets = packets)),
               class = "ylayer")
 }
 
 "+.ylayer" <- function(e1, e2)
 {
-    structure(c(e1, e2), class = "ylayer")
+    if (inherits(e1, "yagp")) 
+    {
+        e1$xargs$panel <- e1$xargs$panel + e2
+        e1
+    }
+    else structure(c(e1, e2), class = "ylayer")
 }
+
 
 
 ## lattice-like 'panel functions' that actually produce layers
@@ -63,7 +72,6 @@ ypanel.xyplot <- function(jitter.x = FALSE, jitter.y = FALSE, ..., render = rend
            mapping = map_points(jitter.x = jitter.x, jitter.y = jitter.y, ...),
            render = render)
 }
-
 
 
 ypanel.loess <- function(..., render = render_lines())

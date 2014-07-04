@@ -1,0 +1,13 @@
+
+
+Random issues that need to be sorted out:
+
+- Default limits
+
+   Not all built-in layers provide their own limits, but some should
+   (e.g., ypanel.loess(), but not ypanel.grid()).  Probably just the
+   data limits, not computed, but something.
+
+
+
+
