@@ -5,9 +5,9 @@
 
 ## Will try to keep this up-to-date.
 
-library(RColorBrewer)
-library(tessella)
-## source.pkg("yagpack") # or
+## library(RColorBrewer)
+## library(tessella)
+
 library(yagpack)
 if (interactive()) x11() else pdf()
 .yagpenv$backend <- graphics_primitives()
@@ -233,8 +233,7 @@ yplot(data = mtcars,
 
 yplot(data = mtcars,
       panel.vars = elist(x = disp, y = mpg, color = factor(gear)),
-      panel = ypanel.grid() + ypanel.xyplot() + ypanel.loess(evaluation = 200),
-      prepanel = function(x, y, ...) default.limits(x, y))
+      panel = ypanel.grid() + ypanel.xyplot() + ypanel.loess(evaluation = 200))
 
 yplot(data = mtcars,
       panel.vars = elist(x = disp, y = mpg, groups = factor(gear), color = hp),
@@ -349,12 +348,11 @@ yplot(data = barley,
       legend = auto.legend(type = "p",
                            vars = elist(groups = year),
                            data = barley),
-      alternating = list(y = 1))
+      alternating = list(y = 3))
 
 yplot(data = data.frame(a = gl(5, 1), b = 1:5),
       panel.vars = elist(x = a, y = b),
       panel = ypanel.barchart(fill = "seagreen"))
-
 
 yplot(data = data.frame(a = gl(5, 1), b = 1:5),
       panel.vars = elist(x = a, y = b, groups = a),

@@ -8,6 +8,10 @@ Random issues that need to be sorted out:
    (e.g., ypanel.loess(), but not ypanel.grid()).  Probably just the
    data limits, not computed, but something.
 
+- Scales
+
+   scales are currently ignored.
+
 
 
 

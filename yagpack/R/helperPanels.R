@@ -28,6 +28,9 @@ yabline <-
              h = NULL, v = NULL,
              reg = NULL, coef = NULL,
              ...,
+             reference = FALSE,
+             col = if (reference) .yagpenv$theme$reference$col
+                   else .yagpenv$theme$add.line$col,
              vp)
 {
     if (!is.null(h) || !is.null(v))
@@ -40,7 +43,7 @@ yabline <-
         x1 <- c(numeric(0), rep(vp$xlim[2], nh), v)
         y0 <- c(numeric(0), h, rep(vp$ylim[1], nv))
         y1 <- c(numeric(0), h, rep(vp$ylim[2], nv))
-        ysegments(x0, y0, x1, y1, ..., vp = vp)
+        ysegments(x0, y0, x1, y1, ..., col = col, vp = vp)
     }
     if (!is.null(reg))
     {
@@ -77,7 +80,7 @@ yabline <-
             x1 <- fbaline(vp$ylim[2])
             ## do something with these
         }
-        ysegments(vp$xlim[1], y0, vp$xlim[2], y1, ..., vp = vp)
+        ysegments(vp$xlim[1], y0, vp$xlim[2], y1, ..., col = col, vp = vp)
     }
 }
 
