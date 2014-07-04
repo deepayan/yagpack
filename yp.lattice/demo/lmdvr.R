@@ -62,47 +62,67 @@ dotplot(variety ~ yield | site, data = barley,
 ##        ylab = "Yield (bushels/acre)", 
 ##        main = "Yield of three varieties of oats",
 ##        sub = "A 3 x 4 split plot experiment with 6 blocks")
-barchart(Class ~ Freq | Sex + Age, data = as.data.frame(Titanic), 
+
+barchart(Freq ~ Class | Sex + Age, data = as.data.frame(Titanic),
          groups = Survived, stack = TRUE, layout = c(4, 1),
-         auto.key = list(title = "Survived", columns = 2))
-barchart(Class ~ Freq | Sex + Age, data = as.data.frame(Titanic), 
+         legend.args = list(title = "Survived"),
+         switch.axes = TRUE)
+
+barchart(Freq ~ Class | Sex + Age, data = as.data.frame(Titanic), 
          groups = Survived, stack = TRUE, layout = c(4, 1), 
-         auto.key = list(title = "Survived", columns = 2),
-         scales = list(x = "free"))
+         legend.args = list(title = "Survived"),
+         relation = list(x = "free"),
+         switch.axes = TRUE)
+
 bc.titanic <- 
-    barchart(Class ~ Freq | Sex + Age, as.data.frame(Titanic), 
-             groups = Survived, stack = TRUE, layout = c(4, 1),
-             auto.key = list(title = "Survived", columns = 2),
-             scales = list(x = "free"))
-update(bc.titanic, 
-       panel = function(...) {
-           panel.grid(h = 0, v = -1)
-           panel.barchart(...)
-       })
-update(bc.titanic, 
-       panel = function(..., border) {
-           panel.barchart(..., border = "transparent")
-       })
+    barchart(Freq ~ Class | Sex + Age, data = as.data.frame(Titanic), 
+             groups = Survived, stack = TRUE, layout = c(4, 1), 
+             legend.args = list(title = "Survived"),
+             relation = list(x = "free"),
+             switch.axes = TRUE)
+
+ypanel.grid(h = 0, v = -1) + bc.titanic
+
+## update(bc.titanic, 
+##        panel = function(...) {
+##            panel.grid(h = 0, v = -1)
+##            panel.barchart(...)
+##        })
+
+## update(bc.titanic, 
+##        panel = function(..., border) {
+##            panel.barchart(..., border = "transparent")
+##        })
 
 
 ## Examples from code/Chapter03.R
 densityplot(~ eruptions, data = faithful)
+
 densityplot(~ eruptions, data = faithful, 
             kernel = "rect", bw = 0.2, plot.points = "rug", n = 200)
-library("latticeExtra")
-data(gvhd10)
+
+## library("latticeExtra")
+
+data(gvhd10, package = "latticeExtra")
+
 densityplot(~log(FSC.H) | Days, data = gvhd10, 
             plot.points = FALSE, ref = TRUE, layout = c(2, 4))
+
 histogram(~log2(FSC.H) | Days, gvhd10, xlab = "log Forward Scatter",
           type = "density", nint = 50, layout = c(2, 4))
+
 data(Chem97, package = "mlmRev")
+
 qqmath(~ gcsescore | factor(score), data = Chem97, 
        f.value = ppoints(100))
+
 qqmath(~ gcsescore | gender, Chem97, groups = score, aspect = "xy", 
        f.value = ppoints(100), auto.key = list(space = "right"),
        xlab = "Standard Normal Quantiles", 
        ylab = "Average GCSE Score")
+
 Chem97.mod <- transform(Chem97, gcsescore.trans = gcsescore^2.34)
+
 qqmath(~ gcsescore.trans | gender, Chem97.mod, groups = score,
        f.value = ppoints(100), aspect = "xy",
        auto.key = list(space = "right", title = "score"), 

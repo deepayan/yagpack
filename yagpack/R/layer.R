@@ -34,10 +34,16 @@ ylayer <- function(setup = NULL, mapping, render, data = NULL, margin.vars = NUL
 
 "+.ylayer" <- function(e1, e2)
 {
+    ## FIXME: doesn't check if both are yagp objects
     if (inherits(e1, "yagp")) 
     {
         e1$xargs$panel <- e1$xargs$panel + e2
         e1
+    }
+    else if (inherits(e2, "yagp")) 
+    {
+        e2$xargs$panel <- e1 + e2$xargs$panel
+        e2
     }
     else structure(c(e1, e2), class = "ylayer")
 }
