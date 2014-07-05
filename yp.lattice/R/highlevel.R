@@ -14,7 +14,7 @@ xyplot <-
     margin.vars <- attr(panel.vars, "margin")
     if (missing(data)) data <- parent.frame()
     if (missing(enclos)) enclos <- parent.frame()
-    yplot(data = data, enclos = enclos, panel.vars = panel.vars, panel = panel, legend = legend, margin.vars = margin.vars)
+    yplot(data = data, enclos = enclos, panel.vars = panel.vars, panel = panel, legend = legend, margin.vars = margin.vars, ...)
 }
 
 densityplot <- 
@@ -31,7 +31,7 @@ densityplot <-
     if (ref) panel <- ypanel.abline(h = 0, reference = TRUE) + panel
     if (isTRUE(plot.points)) panel <- panel + ypanel.points(y = 0, jitter.y = FALSE)
     else if (identical(plot.points, "jitter")) panel <- panel + ypanel.points(y = 0, jitter.y = TRUE)
-    yplot(data = data, enclos = enclos, panel.vars = panel.vars, panel = panel, legend = legend, margin.vars = margin.vars)
+    yplot(data = data, enclos = enclos, panel.vars = panel.vars, panel = panel, legend = legend, margin.vars = margin.vars, ...)
 }
 
 qqmath <- 
@@ -45,7 +45,7 @@ qqmath <-
     margin.vars <- attr(panel.vars, "margin")
     if (missing(data)) data <- parent.frame()
     if (missing(enclos)) enclos <- parent.frame()
-    yplot(data = data, enclos = enclos, panel.vars = panel.vars, panel = panel, legend = legend, margin.vars = margin.vars)
+    yplot(data = data, enclos = enclos, panel.vars = panel.vars, panel = panel, legend = legend, margin.vars = margin.vars, ...)
 }
 
 histogram <- 
@@ -59,10 +59,10 @@ histogram <-
     margin.vars <- attr(panel.vars, "margin")
     if (missing(data)) data <- parent.frame()
     if (missing(enclos)) enclos <- parent.frame()
-    yplot(data = data, enclos = enclos, panel.vars = panel.vars, panel = panel, legend = legend, margin.vars = margin.vars)
+    yplot(data = data, enclos = enclos, panel.vars = panel.vars, panel = panel, legend = legend, margin.vars = margin.vars, ...)
 }
 
-dotplot <- xyplot
+stripplot <- dotplot <- xyplot
 
 
 bwplot <- 
@@ -76,7 +76,7 @@ bwplot <-
     margin.vars <- attr(panel.vars, "margin")
     if (missing(data)) data <- parent.frame()
     if (missing(enclos)) enclos <- parent.frame()
-    yplot(data = data, enclos = enclos, panel.vars = panel.vars, panel = panel, legend = legend, margin.vars = margin.vars)
+    yplot(data = data, enclos = enclos, panel.vars = panel.vars, panel = panel, legend = legend, margin.vars = margin.vars, ...)
 }
 
 barchart <- 
@@ -90,7 +90,7 @@ barchart <-
     margin.vars <- attr(panel.vars, "margin")
     if (missing(data)) data <- parent.frame()
     if (missing(enclos)) enclos <- parent.frame()
-    yplot(data = data, enclos = enclos, panel.vars = panel.vars, panel = panel, legend = legend, margin.vars = margin.vars)
+    yplot(data = data, enclos = enclos, panel.vars = panel.vars, panel = panel, legend = legend, margin.vars = margin.vars, ...)
 }
 
 

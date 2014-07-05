@@ -12,6 +12,17 @@ Random issues that need to be sorted out:
 
    scales are currently ignored.
 
+- Aspect ratio
+
+   Need to fix aspect="xy" for one.
+
+   More importantly, non-fill aspects place plot to the left of the
+   available area, not middle, and leave a lot of space between plot
+   and legends etc.
+
+- switch.axes
+
+   Fix axis labels (switch them too) when switch.axes = TRUE
 
 
 

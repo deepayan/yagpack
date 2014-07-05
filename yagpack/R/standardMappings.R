@@ -354,7 +354,8 @@ map_table <- function(...)
 
 
 hist_constructor <- 
-    function(x, weights = NULL, groups = NULL, type = c("density", "count", "percent"),
+    function(x, weights = NULL, groups = NULL,
+             type = c("density", "count", "percent"),
              stack = TRUE, area = FALSE, #FIXME: better name
              breaks, include.lowest = TRUE, right = TRUE, origin = 0, ...,
              mapfill = TRUE, col = NULL, fill = NULL, limits = TRUE)
@@ -397,7 +398,7 @@ map_histogram <- function(...)
                   col = NULL, fill = NULL, groups = NULL, stack = TRUE, #area = TRUE,
                   breaks = shared.env$setup$breaks, equal.widths = TRUE,
                   nint = round(log2(length(x)) + 1),
-                  type = "count",
+                  type = "density",
                   shared.env = NULL, origin = 0,
                   limits = TRUE)
     {

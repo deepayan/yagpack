@@ -92,20 +92,33 @@ ypanel.lm <- function(..., render = render_lines())
 
 ypanel.qqmath <- function(..., render = render_points())
 {
+    qq_setup <- function(panel.vars, data, enclos, shared.env, ...)
+    {
+        if (!is.null(panel.vars$x)) shared.env$setup$ylab <- as.character(panel.vars$x)
+        shared.env$setup$xlab <- "theoretical quantiles"
+    }
     ylayer(mapping = map_qqmath(...), render = render)
 }
 
 ypanel.density <- function(..., render = render_lines())
 {
-    ylayer(mapping = map_density(...), render = render)
+    dens_setup <- function(panel.vars, data, enclos, shared.env, ...)
+    {
+        if (!is.null(panel.vars$x)) shared.env$setup$xlab <- as.character(panel.vars$x)
+        shared.env$setup$ylab <- "density"
+    }
+    ylayer(setup = dens_setup, mapping = map_density(...), render = render)
 }
 
 ypanel.histogram <- function(..., render = render_rect())
 {
     hist_setup <- function(panel.vars, data, enclos, shared.env,
                            breaks = NULL, equal.widths = TRUE,
-                           nint = round(log2(length(x)) + 1), ...)
+                           nint = round(log2(length(x)) + 1),
+                           type = "density", ...)
     {
+        if (!is.null(panel.vars$x)) shared.env$setup$xlab <- as.character(panel.vars$x)
+        shared.env$setup$ylab <- type
         packet_data <- lapply(panel.vars, evaluate, data = data, enclos = enclos)
         x <- packet_data$x
         if (missing(breaks)) # explicit NULL, or function, or character is fine
@@ -121,12 +134,21 @@ ypanel.histogram <- function(..., render = render_rect())
 
 ypanel.barchart <- function(..., render = render_rect())
 {
-    ylayer(mapping = map_table(...), render = render)
+    bar_setup <- function(panel.vars, data, enclos, shared.env, ...)
+    {
+        if (!is.null(panel.vars$y)) shared.env$setup$ylab <- as.character(panel.vars$y)
+    }
+    ylayer(setup = bar_setup, mapping = map_table(...), render = render)
 }
 
 ypanel.boxplot <- function(..., render = render_boxplot())
 {
-    ylayer(mapping = map_boxplot(...), render = render)
+    box_setup <- function(panel.vars, data, enclos, shared.env, ...)
+    {
+        if (!is.null(panel.vars$y)) shared.env$setup$ylab <- as.character(panel.vars$y)
+    }
+    ylayer(setup = box_setup,
+           mapping = map_boxplot(...), render = render)
 }
 
 ## 'reference' layers, usually not data driven.
