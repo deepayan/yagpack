@@ -608,36 +608,6 @@ map_parallel <- function(...)
 }
 
 
-map_parallel <- function(...)
-{
-    f <- function(x = NULL, groups = NULL, ...,
-                  vorder = shared.env$setup$vorder,
-                  shared.env = NULL, 
-                  color = NULL, col = NULL, limits = TRUE)
-    {
-        ## x should be a matrix
-        ## Maybe we can return a bunch of segments() calls
-        ## Y-axis: numeric data
-        ## X-axis: columns of x
-        if (!is.null(vorder)) x <- x[, vorder, drop = FALSE]
-        cnames <- colnames(x)
-        if (is.null(cnames)) cnames <- as.character(seq_len(ncol(x)))
-        lim <-
-            if (limits) default.limits(x = factor(cnames, levels = cnames),
-                                       y = as.numeric(x))
-            else NULL
-        col <- if (is.null(color)) col else mapColor(color)
-        l <- lapply(seq_len(ncol(x) - 1),
-                    function(i) {
-                        parallel_constructor(xfrom = x[,i],
-                                             xto = x[,i+1],
-                                             i = i, col = col, limits = lim)
-                    })
-    }
-    changeDefaults(f, ...)
-}
-
-
 map_projection <- function(..., jitter.x = FALSE, jitter.y = FALSE)
 {
     pargs <- list(jitter.x = jitter.x, jitter.y = jitter.y)

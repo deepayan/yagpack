@@ -7,3 +7,4 @@ Depends: R (>= 2.14.0), RColorBrewer, tessella
 Maintainer: Deepayan Sarkar <deepayan.sarkar@gmail.com>
 Description: A high-level trellis-like package based on tessella.
 License: GPL-3
+Suggests: mlmRev, MEMSS, lattice, latticeExtra, MASS, qtutils

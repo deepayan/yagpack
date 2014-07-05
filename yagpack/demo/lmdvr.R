@@ -16,16 +16,22 @@ x11()
 data(Chem97, package = "mlmRev")
 xtabs( ~ score, data = Chem97)
 
+# Figure 1.1
 histogram(x = gcsescore, data = Chem97, margin.vars = ~factor(score))
 
+
+# Figure 1.2
 densityplot(gcsescore, data = Chem97, margin.vars = ~factor(score),
             ref = TRUE)
 
 ###----------
 
+# Figure 1.3
 densityplot(~ gcsescore, data = Chem97, groups = score,
             plot.points = FALSE, ref = TRUE,
             auto.key = list(columns = 3))
+
+# FIXME not displayed in three columns        
 
 ## tp1 <- histogram(~ gcsescore | factor(score), data = Chem97)
 ## tp2 <- 
@@ -37,18 +43,24 @@ densityplot(~ gcsescore, data = Chem97, groups = score,
 ## plot(tp1, split = c(1, 1, 1, 2)) # FIXME: was plot instead of print
 ## plot(tp2, split = c(1, 2, 1, 2), newpage = FALSE)
 
+# TODO Figure 1.4
 
 ## Chapter 2
 
 data(Oats, package = "MEMSS")
 
-tp1.oats <- xyplot(nitro, yield, margin.vars = ~ Variety + Block, data = Oats, type = 'o')
+tp1.oats <- xyplot(nitro, yield, 
+    margin.vars = ~ Variety + Block, data = Oats, type = 'o')
 
 ## tp1.oats <- xyplot(nitro, yield,
 ##                    margin.vars = elist(Variety = Variety, Block = Block),
 ##                    data = Oats, type = 'o')
 
+# Figure 2.1
+# N.B. order of panels different from lattice original
 print(tp1.oats)
+
+
 dim(tp1.oats)
 dimnames(tp1.oats)
 
@@ -68,6 +80,7 @@ summary(tp1.oats)
 ## update(tp1.oats, aspect = "xy", layout = c(0, 18), 
 ##        between = list(x = c(0, 0, 0.5), y = 0.5))
 
+# Figure 2.6
 data(barley, package = "lattice")
 
 dotplot(yield, variety, margin.vars = ~ site, data = barley, 
@@ -75,10 +88,13 @@ dotplot(yield, variety, margin.vars = ~ site, data = barley,
         relation = list(y = "free"),
         groups = year) # , auto.key = list(space = 'right'))
 
+# FIXME different pch used on original lattice graphs    
+    
 ## key.variety <- 
 ##     list(space = "right", text = list(levels(Oats$Variety)),
 ##          points = list(pch = 1:3, col = "black"))
 
+# Figure 2.7
 xyplot(nitro, yield, margin.vars = ~ Block, data = Oats,
        aspect = "xy", type = "o", 
        groups = Variety,
@@ -86,11 +102,14 @@ xyplot(nitro, yield, margin.vars = ~ Block, data = Oats,
        ylab = "Yield (bushels/acre)", 
        main = "Yield of three varieties of oats",
        sub = "A 3 x 4 split plot experiment with 6 blocks")
-
+# FIXME different pch used on original lattice graphs
+   
+# Figure 2.8   
 barchart(Freq ~ Class, margin.vars = ~ Sex + Age,
          data = as.data.frame(Titanic), 
          groups = Survived, stack = FALSE)
 
+# Figure 2.9     
 barchart(Freq ~ Class, margin.vars = ~ Sex + Age,
          data = as.data.frame(Titanic), 
          groups = Survived, stack = TRUE, layout = c(4, 1),
@@ -117,25 +136,28 @@ barchart(Freq ~ Class, margin.vars = ~ Sex + Age,
 
 ## Chapter 3
 
-
+# Figure 3.1
 densityplot(~ eruptions, data = faithful)
 
+# Figure 3.2
 ## FIXME
 densityplot(~ eruptions, data = faithful, 
             kernel = "rect", bw = 11, plot.points = "rug",
             n = 200)
 
-## library("flatticeExtra")
-## data(gvhd10)
+# Figure 3.3        
 data(gvhd10, package = "latticeExtra")
 
 densityplot(~log(FSC.H), margin.vars = ~ Days, data = gvhd10, 
             plot.points = FALSE, ref = TRUE,
             layout = c(2, 4))
 
+# Figure 3.4        
 histogram(~log2(FSC.H), margin.vars = ~ Days, gvhd10, xlab = "log Forward Scatter",
           type = "density", nint = 50, layout = c(2, 4))
 
+
+# Figure 3.5      
 data(Chem97, package = "mlmRev")
 
 qqmath(~ gcsescore , margin.vars = ~  factor(score),
