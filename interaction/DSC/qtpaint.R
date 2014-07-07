@@ -1,7 +1,7 @@
 
 library(RColorBrewer)
 library(tessella)
-library(yagpack)
+library(imp)
 library(qtbase)
 library(quilt)
 library(qtpaint)

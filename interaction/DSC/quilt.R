@@ -1,7 +1,7 @@
 
 library(RColorBrewer)
 library(tessella)
-library(yagpack)
+library(imp)
 library(qtbase)
 library(quilt)
 library(qtpaint)
@@ -21,7 +21,7 @@ scene$setSceneRect(qrect(0, 0, sview$width, sview$height))
 sview$setCursor(Qt$QCursor(Qt$Qt$CrossCursor))
 
 qp <- quilt_primitives(sview)
-.yagpenv$backend <- qp
+.impenv$backend <- qp
 
 pstates # static plot
 

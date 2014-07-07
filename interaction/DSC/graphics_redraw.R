@@ -1,7 +1,7 @@
 
 library(RColorBrewer)
 library(tessella)
-library(yagpack)
+library(imp)
 
 source("utils.R")
 
@@ -11,7 +11,7 @@ library(qtutils)
 ## x11(type = "Xlib") or windows() or quartz()? cairoDevice()?
 QT(width = 12, height = 6, family = "Helvetica")
 
-.yagpenv$backend <- graphics_primitives
+.impenv$backend <- graphics_primitives
 
 psunspot <- 
     yplot(data = NULL,

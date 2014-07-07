@@ -1,7 +1,7 @@
 
 library(RColorBrewer)
 library(tessella)
-library(yagpack)
+library(imp)
 library(qtutils)
 
 source("utils.R")
@@ -13,7 +13,7 @@ dev1 <- QT(width = 12, height = 6, family = "Helvetica")
 dev2 <- QT(width = 12, height = 6, family = "Helvetica")
 dev2$setStyleSheet("background: transparent")
 
-.yagpenv$backend <- graphics_primitives
+.impenv$backend <- graphics_primitives
 
 w <- Qt$QWidget()
 l <- Qt$QStackedLayout(w)

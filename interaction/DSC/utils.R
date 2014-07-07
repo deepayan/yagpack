@@ -331,7 +331,7 @@ pan_zoom_ts <- function(object, primitives = NULL)
 reorder_vars <- function(object, primitives = NULL,
                          dev.main, dev.feedback)
 {
-    if (is.null(primitives)) primitives <- .yagpenv$backend
+    if (is.null(primitives)) primitives <- .impenv$backend
     if (is.function(primitives)) primitives <- primitives()
     dev.set(dev.main)
     plot(object, primitives = primitives)
@@ -504,7 +504,7 @@ identify_points_graphics <-
              dev.main, dev.feedback,
              tooltips = rownames(object$xargs$data))
 {
-    if (is.null(primitives)) primitives <- .yagpenv$backend
+    if (is.null(primitives)) primitives <- .impenv$backend
     if (is.function(primitives)) primitives <- primitives()
     dev.set(dev.main)
     plot(object, primitives = primitives)
