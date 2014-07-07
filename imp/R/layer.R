@@ -18,7 +18,7 @@ yrender <- function(f, switch_names = NULL)
 ## A "ylayer" object is a list of one or more such layers, that can be
 ## combined using "+.ylayer".
 
-## As a convenience, a "yagp" plot object and a layer can also be `added'.
+## As a convenience, a "yplot" plot object and a layer can also be `added'.
 
 ylayer <- function(setup = NULL, mapping, render, data = NULL, margin.vars = NULL, panel.vars = NULL, enclos = NULL)
 {
@@ -34,13 +34,13 @@ ylayer <- function(setup = NULL, mapping, render, data = NULL, margin.vars = NUL
 
 "+.ylayer" <- function(e1, e2)
 {
-    ## FIXME: doesn't check if both are yagp objects
-    if (inherits(e1, "yagp")) 
+    ## FIXME: doesn't check if both are yplot objects
+    if (inherits(e1, "yplot")) 
     {
         e1$xargs$panel <- e1$xargs$panel + e2
         e1
     }
-    else if (inherits(e2, "yagp")) 
+    else if (inherits(e2, "yplot")) 
     {
         e2$xargs$panel <- e1 + e2$xargs$panel
         e2

@@ -1,9 +1,9 @@
-Package: yagpack
+Package: imp
 Version: 0.0-1
 Date:    2011/11/26
-Title: Yet Another Graphics Package 
+Title: Imp: yet another graphics package for R 
 Author: Deepayan Sarkar
 Depends: R (>= 2.14.0), RColorBrewer, tessella
 Maintainer: Deepayan Sarkar <deepayan.sarkar@gmail.com>
 Description: A high-level trellis-like package based on tessella.
-License: GPL-3
+License: GPL-2 | GPL-3

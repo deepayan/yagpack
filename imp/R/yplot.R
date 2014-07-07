@@ -1,6 +1,6 @@
 
 ## This is the main high-level function in the package that produces a
-## "yagp" object.  This needs to be careful to avoid making
+## "yplot" object.  This needs to be careful to avoid making
 ## assumptions about the rendering backend, but include enough
 ## information to make rendering possible.
 
@@ -58,10 +58,10 @@
 ##' @param ylab Y-axis label.
 ##' @param main Main title.
 ##' @param sub Subtitle.
-##' @param theme A theme, typically produced by \code{\link{yagp.theme}}.
+##' @param theme A theme, typically produced by \code{\link{imp.theme}}.
 ##' @param legend A legend.
 ##' @param ... Further arguments, stored in the \code{xargs} component of the result.
-##' @return A list with class \code{c("yagp", "ylayer")} containing
+##' @return A list with class \code{c("yplot", "ylayer")} containing
 ##' the information passed to the function after some minimal processing.
 ##' @author Deepayan Sarkar
 yplot <-
@@ -82,7 +82,7 @@ yplot <-
              xlab = shared.env$setup$xlab,
              ylab = shared.env$setup$ylab,
              main = NULL, sub = NULL,
-             theme = yagp.theme(),
+             theme = imp.theme(),
              legend = NULL,
              ...)
 {
@@ -99,8 +99,8 @@ yplot <-
     shared.env$viewports <- list()
     shared.env$setup <- list() # for setup functions to store things
 
-    relation <- do.call(yagp.relation, relation)
-    alternating <- do.call(yagp.alternating, alternating)
+    relation <- do.call(imp.relation, relation)
+    alternating <- do.call(imp.alternating, alternating)
     if (inherits(margin.vars, "formula")) margin.vars <- margin.terms(margin.vars)
     if (is.null(layout))
     {
@@ -143,24 +143,24 @@ yplot <-
               xargs = xargs,
               shared.env = shared.env, # also in xargs
               ...)
-    class(x) <- c("yagp", "ylayer")
+    class(x) <- c("yplot", "ylayer")
     x
 }
 
 ## plot method
 
 
-##' Plot method for yagp objects.
+##' Plot method for yplot objects.
 ##'
 ##' .. content for \details{} ..
-##' @title Plot yagp objects
-##' @param x An object of class \code{"yagp"}.
+##' @title Plot yplot objects
+##' @param x An object of class \code{"yplot"}.
 ##' @param page A vector specifying which page(s) to draw, for
 ##' multi-page plots.
 ##' @param primitives An environment containing the primitives to use,
 ##' or a function that returns such an environment.  By default,
-##' \code{.yagpenv$backend} is used.
-##' @param ... Further arguments, passed on to \code{\link{yagp_page}}.
+##' \code{.impenv$backend} is used.
+##' @param ... Further arguments, passed on to \code{\link{imp_page}}.
 ##' @param new Logical flag to control whether the plot should start a new page.
 ##' @param draw_labels Logical flag to control whether labels are to be drawn.
 ##' @param draw_panels Logical flag to control whether panels are to be drawn.
@@ -176,7 +176,7 @@ yplot <-
 ##' specify the position as a cell in a  matrix.
 ##' @return NULL
 ##' @author Deepayan Sarkar
-plot.yagp <-
+plot.yplot <-
     function(x, page = 1,
              primitives = NULL,
              ...,
@@ -193,12 +193,12 @@ plot.yagp <-
     if (!is.null(x$aspect)) x$aspect <- with(x, compute.aspect(aspect, shared.env$limits))
 
     ## FIXME: make theme handling simpler
-    if (is.null(.yagpenv$theme)) .yagpenv$theme <- yagp.custom.theme()
+    if (is.null(.impenv$theme)) .impenv$theme <- imp.custom.theme()
     if (!is.null(x$theme)) 
     {
-        .yagpenv$theme <- modifyList(.yagpenv$theme, x$theme)
+        .impenv$theme <- modifyList(.impenv$theme, x$theme)
     }
-    if (is.null(primitives)) primitives <- .yagpenv$backend
+    if (is.null(primitives)) primitives <- .impenv$backend
     if (is.function(primitives)) primitives <- primitives()
     a <- attr(attach(primitives), "name")
     on.exit(detach(a, character.only = TRUE))
@@ -221,7 +221,7 @@ plot.yagp <-
     position <- do.call(computePosition, position)
     for (p in page)
     {
-        yagp_page(x, page = p, ..., new = new,
+        imp_page(x, page = p, ..., new = new,
                   draw_labels = draw_labels,
                   draw_panels = draw_panels,
                   draw_strips = draw_strips,
@@ -235,14 +235,14 @@ plot.yagp <-
 
 
 
-print.yagp <- function(x, ...)
+print.yplot <- function(x, ...)
 {
     plot(x, ...)
     invisible(x)
 }
 
 
-summary.yagp <-
+summary.yplot <-
     function(object, ...)
 {
     ## FIXME: This sort of assumes a data.frame (at least nrow())
@@ -252,12 +252,12 @@ summary.yagp <-
              else structure(sapply(packets, length),
                             dim = dim(packets),
                             dimnames = dimnames(packets)))
-    class(ans) <- "summary.yagp"
+    class(ans) <- "summary.yplot"
     ans
 }
 
 
-print.summary.yagp <- function(x, ...)
+print.summary.yplot <- function(x, ...)
 {
     cat(gettext("\nNumber of observations:\n"))
     x <- unclass(x)
@@ -266,26 +266,26 @@ print.summary.yagp <- function(x, ...)
 }
 
 
-dim.yagp <- function(x)
+dim.yplot <- function(x)
 {
     dim(x$xargs$packets)
 }
 
 
-dimnames.yagp <- function(x)
+dimnames.yplot <- function(x)
 {
     dimnames(x$xargs$packets)
 }
 
 
-"dimnames<-.yagp" <- 
+"dimnames<-.yplot" <- 
     function (x, value)
 {
     dimnames(x$xargs$packets) <- value
     x
 }
 
-"[.yagp" <- function(x, i, j, ..., drop = FALSE)
+"[.yplot" <- function(x, i, j, ..., drop = FALSE)
 {
     if (!missing(drop) && drop)
         warning("'drop=TRUE' ignored")
@@ -301,7 +301,7 @@ dimnames.yagp <- function(x)
     x
 }
 
-update.yagp <- function(object, ...)
+update.yplot <- function(object, ...)
 {
     ## FIXME: very basic, no error checking
     dots <- list(...)

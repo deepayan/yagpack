@@ -1,12 +1,12 @@
 
-yagp.key <-
+imp.key <-
     function(text,
              type = c("p", "l", "b", "n"), # points/lines/both/none
              bg = "transparent", border = "transparent", # for rectangles
              title = NULL,
              lwd = 1, lty = 1,
              col = "black", col.symbol = col, col.line = col, pch = 1, cex = 1,
-             theme = yagp.theme(),
+             theme = imp.theme(),
              give.extent = FALSE,
              vp)
 {
@@ -59,7 +59,7 @@ yagp.key <-
 
 auto.legend <- function(type = c("p", "l", "b", "r"),
                         vars = panel.vars, data, enclos = .GlobalEnv, ...,
-                        theme = yagp.theme(),
+                        theme = imp.theme(),
                         more.args = list(), space = "top")
 {
     ## type="r" means rectangles.  TODO|FIXME: All this needs to be refined.

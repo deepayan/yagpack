@@ -25,4 +25,6 @@ Random issues that need to be sorted out:
    Fix axis labels (switch them too) when switch.axes = TRUE
 
 
+.yagpenv -> .impenv
 
+yagp.theme -> imp.theme

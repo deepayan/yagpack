@@ -1,10 +1,10 @@
 
 ## NOT READY
 
-library(yp.lattice)
-.yagpenv$backend <- graphics_primitives()
+library(imp.lattice)
+.impenv$backend <- graphics_primitives()
 
-.yagpenv$theme <- yagp.theme("lattice")
+.impenv$theme <- imp.theme("lattice")
 
 ## code from lattice book
 

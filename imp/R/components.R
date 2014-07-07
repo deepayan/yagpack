@@ -2,13 +2,13 @@
 ## give.extent = TRUE means required space (in pixels) should be returned (no actual drawing)
 
 
-yagp.strip.horizontal <-
+imp.strip.horizontal <-
     function(which.packet, 
              packets,
              which.margins = seq_along(dim(packets)),
              shared.env, 
              ...,
-             theme = yagp.theme(),
+             theme = imp.theme(),
              col = theme$strip$col,
              fill = theme$strip$fill,
              give.extent = FALSE,
@@ -43,7 +43,7 @@ yagp.strip.horizontal <-
 
 
 
-yagp_page_compute_viewports <- function(x, page = 1, vp = NULL, ...)
+imp_page_compute_viewports <- function(x, page = 1, vp = NULL, ...)
 {
     ## Compute all viewports in x$sharev.env for later access
 
@@ -118,7 +118,7 @@ yagp_page_compute_viewports <- function(x, page = 1, vp = NULL, ...)
     if (!is.null(x$legend))
     {
         plot_layout.x[findx("legend.right")] <- 
-            do.call(yagp.key,
+            do.call(imp.key,
                     c(x$legend, list(give.extent = TRUE)))$w
     }
 
@@ -164,10 +164,10 @@ yagp_page_compute_viewports <- function(x, page = 1, vp = NULL, ...)
                      side = "left",
                      give.extent = TRUE)
             ## FIXME: allow custom functions
-            x.withlabel[p] <- do.call(yagp.xaxis, c(xargs, x$scales$x, list(do.labels = TRUE)))$h
-            x.nolabel[p] <- do.call(yagp.xaxis, c(xargs, x$scales$x, list(do.labels = FALSE)))$h
-            y.withlabel[p] <- do.call(yagp.yaxis, c(yargs, x$scales$y, list(do.labels = TRUE)))$w
-            y.nolabel[p] <- do.call(yagp.yaxis, c(yargs, x$scales$y, list(do.labels = FALSE)))$w
+            x.withlabel[p] <- do.call(imp.xaxis, c(xargs, x$scales$x, list(do.labels = TRUE)))$h
+            x.nolabel[p] <- do.call(imp.xaxis, c(xargs, x$scales$x, list(do.labels = FALSE)))$h
+            y.withlabel[p] <- do.call(imp.yaxis, c(yargs, x$scales$y, list(do.labels = TRUE)))$w
+            y.nolabel[p] <- do.call(imp.yaxis, c(yargs, x$scales$y, list(do.labels = FALSE)))$w
         }
     }
     x.withlabel <- 5 + max(x.withlabel)
@@ -224,7 +224,7 @@ yagp_page_compute_viewports <- function(x, page = 1, vp = NULL, ...)
                 pos <- compute.position(row(panel.layout)[p], col(panel.layout)[p], what = "strip.top")
                 figure_layout.y[pos["row"]] <-
                     max(figure_layout.y[pos["row"]],
-                        1.2 * yagp.strip.horizontal(which.packet = i,
+                        1.2 * imp.strip.horizontal(which.packet = i,
                                                     packets = packets,
                                                     give.extent = TRUE)$h)
             }
@@ -279,19 +279,19 @@ yagp_page_compute_viewports <- function(x, page = 1, vp = NULL, ...)
 }
 
 
-yagp_page_render_labels <- function(x, page = 1, viewports = x$shared.env$viewports, ...)
+imp_page_render_labels <- function(x, page = 1, viewports = x$shared.env$viewports, ...)
 {
     getvp <- function(name) viewports[[name]]
     if (!is.null(x$main)) ttext(0.5, 0.5, x$main, vp = getvp("main_vp"))
     if (!is.null(x$sub)) ttext(0.5, 0.5, x$sub, vp = getvp("sub_vp"))
     if (!is.null(x$xlab)) ttext(0.5, 0.5, x$xlab, vp = getvp("xlab_vp"))
     if (!is.null(x$ylab)) ttext(0.5, 0.5, x$ylab, vp = getvp("ylab_vp"), rot = 90)
-    if (!is.null(x$legend)) do.call(yagp.key, c(x$legend, list(vp = getvp("legend_vp"))))
+    if (!is.null(x$legend)) do.call(imp.key, c(x$legend, list(vp = getvp("legend_vp"))))
     invisible()
 }
 
 
-yagp_page_render_panels <- function(x, page = 1, viewports = x$shared.env$viewports, ..., panel = x$xargs$panel)
+imp_page_render_panels <- function(x, page = 1, viewports = x$shared.env$viewports, ..., panel = x$xargs$panel)
 {
     getvp <- function(name) viewports[[name]]
     panel.layout <- x$panel.layout[,, page, drop = FALSE] # array of packets
@@ -350,7 +350,7 @@ yagp_page_render_panels <- function(x, page = 1, viewports = x$shared.env$viewpo
 }
 
 
-yagp_page_render_strips <- function(x, page = 1, viewports = x$shared.env$viewports, ...)
+imp_page_render_strips <- function(x, page = 1, viewports = x$shared.env$viewports, ...)
 {
     getvp <- function(name) viewports[[name]]
     panel.layout <- x$panel.layout[,, page, drop = FALSE] # array of packets
@@ -364,7 +364,7 @@ yagp_page_render_strips <- function(x, page = 1, viewports = x$shared.env$viewpo
         if (i > 0)
         {
             strip_vp <- getvp(sprintf("strip_vp_%g", p))
-            yagp.strip.horizontal(which.packet = i,
+            imp.strip.horizontal(which.packet = i,
                                   packets = packets,
                                   shared.env = x$shared.env,
                                   theme = x$theme,
@@ -375,7 +375,7 @@ yagp_page_render_strips <- function(x, page = 1, viewports = x$shared.env$viewpo
 }
 
 
-yagp_page_render_axes <- function(x, page = 1, viewports = x$shared.env$viewports, ...)
+imp_page_render_axes <- function(x, page = 1, viewports = x$shared.env$viewports, ...)
 {
     getvp <- function(name) viewports[[name]]
     panel.layout <- x$panel.layout[,, page, drop = FALSE] # array of packets
@@ -413,24 +413,24 @@ yagp_page_render_axes <- function(x, page = 1, viewports = x$shared.env$viewport
             if (x$relation$x == "same")
             {
                 if (fcolumn == 1 && rep(x$alternating$x, length = frow)[frow] %in% c(2, 3))
-                    do.call(yagp.xaxis, c(xargs, x$scales$x, list(side = "top", vp = strip_vp)))
+                    do.call(imp.xaxis, c(xargs, x$scales$x, list(side = "top", vp = strip_vp)))
                 if (fcolumn == ldim[2] && rep(x$alternating$x, length = frow)[frow] %in% c(1, 3))
-                    do.call(yagp.xaxis, c(xargs, x$scales$x, list(side = "bottom", vp = panel_vp)))
+                    do.call(imp.xaxis, c(xargs, x$scales$x, list(side = "bottom", vp = panel_vp)))
             }
             else
             {
-                do.call(yagp.xaxis, c(xargs, x$scales$x, list(side = "bottom", vp = panel_vp)))
+                do.call(imp.xaxis, c(xargs, x$scales$x, list(side = "bottom", vp = panel_vp)))
             }
             if (x$relation$y == "same")
             {
                 if (frow == 1 && rep(x$alternating$y, length = fcolumn)[fcolumn] %in% c(1, 3))
-                    do.call(yagp.yaxis, c(yargs, x$scales$y, list(side = "left", vp = panel_vp)))
+                    do.call(imp.yaxis, c(yargs, x$scales$y, list(side = "left", vp = panel_vp)))
                 if (frow == ldim[1] && rep(x$alternating$y, length = fcolumn)[fcolumn] %in% c(2, 3))
-                    do.call(yagp.yaxis, c(yargs, x$scales$y, list(side = "right", vp = panel_vp)))
+                    do.call(imp.yaxis, c(yargs, x$scales$y, list(side = "right", vp = panel_vp)))
             }
             else
             {
-                do.call(yagp.yaxis, c(yargs, x$scales$y, list(side = "left", vp = panel_vp)))
+                do.call(imp.yaxis, c(yargs, x$scales$y, list(side = "left", vp = panel_vp)))
             }
         }
     }
@@ -438,7 +438,7 @@ yagp_page_render_axes <- function(x, page = 1, viewports = x$shared.env$viewport
 }
 
 
-yagp_page <- function(x, page = 1, vp = NULL, ...,
+imp_page <- function(x, page = 1, vp = NULL, ...,
                       draw_labels = TRUE,
                       draw_panels = TRUE,
                       draw_strips = TRUE,
@@ -456,11 +456,11 @@ yagp_page <- function(x, page = 1, vp = NULL, ...,
     tinitialize(context, newpage = new)
     on.exit(tfinalize())
 
-    x$shared.env$viewports <- yagp_page_compute_viewports(x, page = page, vp = vp, ...)
-    if (draw_labels) yagp_page_render_labels(x, page = page, ...) # includes legend
-    if (draw_panels) yagp_page_render_panels(x, page = page, ...)
-    if (draw_strips) yagp_page_render_strips(x, page = page, ...)
-    if (draw_axes) yagp_page_render_axes(x, page = page, ...)
+    x$shared.env$viewports <- imp_page_compute_viewports(x, page = page, vp = vp, ...)
+    if (draw_labels) imp_page_render_labels(x, page = page, ...) # includes legend
+    if (draw_panels) imp_page_render_panels(x, page = page, ...)
+    if (draw_strips) imp_page_render_strips(x, page = page, ...)
+    if (draw_axes) imp_page_render_axes(x, page = page, ...)
 }
 
 

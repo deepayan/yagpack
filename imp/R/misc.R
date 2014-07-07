@@ -95,13 +95,13 @@ panel.terms <- function(x, tilde = as.symbol("~"), bar = as.symbol("|"))
 
 ## constructors
 
-yagp.relation <- function(x = "same", y = "same", z = "same",
+imp.relation <- function(x = "same", y = "same", z = "same",
                      margin = NULL)
 {
     list(x = x, y = y, z = z, margin = margin)
 }
 
-yagp.alternating <- function(x = TRUE, y = TRUE)
+imp.alternating <- function(x = TRUE, y = TRUE)
 {
     if (is.logical(x)) x <- if (x) c(1, 2) else 1
     if (is.logical(y)) y <- if (y) c(1, 2) else 1

@@ -1,6 +1,6 @@
 
 
-yagp.xaxis <-
+imp.xaxis <-
     function(lim, tick.number = 5,
              at = NULL,
              labels = NULL,
@@ -14,7 +14,7 @@ yagp.xaxis <-
              vadj = switch(side, bottom = 1, top = 0),
              ...,
              tick.length = 8,
-             theme = yagp.theme(),
+             theme = imp.theme(),
              give.extent = FALSE,
              vp)
 {
@@ -40,7 +40,7 @@ yagp.xaxis <-
 }
 
 
-yagp.yaxis <-
+imp.yaxis <-
     function(lim, tick.number = 5,
              at = NULL,
              labels = NULL,
@@ -54,7 +54,7 @@ yagp.yaxis <-
              vadj = 0.5,
              ...,
              tick.length = 8,
-             theme = yagp.theme(),
+             theme = imp.theme(),
              give.extent = FALSE,
              vp)
 {

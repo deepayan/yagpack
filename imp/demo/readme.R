@@ -8,9 +8,9 @@
 ## library(RColorBrewer)
 ## library(tessella)
 
-library(yagpack)
+library(imp)
 if (interactive()) x11() else pdf()
-.yagpenv$backend <- graphics_primitives()
+.impenv$backend <- graphics_primitives()
 
 
 ## We distinguish between two kinds of variables: margin
@@ -71,7 +71,7 @@ p
 ## But how about different data source?  We assume the same
 ## margin.vars and panel.vars, but is that enough?  In any case, the
 ## 'superpanel' function has to change then.  In the most general
-## case, we may want to combine two separate "yagp" objects (e.g.,
+## case, we may want to combine two separate "yplot" objects (e.g.,
 ## scales lasrge enough to enclose both).  But often just use the
 ## first one's details, and the second one provides a layer with new
 ## data.
@@ -566,12 +566,12 @@ yplot(data = do.call(data.frame, lapply(iris, scale01, jitter = TRUE)),
 
 
 ## What's the idea of themes?  A default theme can be saved in
-## .yagpenv$theme.  yagp.theme() will return this if set.  We don't
+## .impenv$theme.  imp.theme() will return this if set.  We don't
 ## want to pass around the theme everywhere as it will be difficult to
 ## keep track.  So everyone should take their defaults from
-## yagp.theme().
+## imp.theme().
 
 ## To allow per-plot customization, yplot() has a theme argument. This
-## will be temporarily made the default in plot.yagp.
+## will be temporarily made the default in plot.yplot.
 
 

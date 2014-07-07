@@ -99,7 +99,7 @@ level.colors <-
 
 
 mapColor <- function(x, r = if (is.numeric(x)) range(x) else levels(as.factor(x)),
-                     pallette = theme$default$col, regions = theme$regions$col, ..., theme = yagp.theme())
+                     pallette = theme$default$col, regions = theme$regions$col, ..., theme = imp.theme())
 {
     if (is.numeric(x)) level.colors(x, colramp = regions)
     else
@@ -110,7 +110,7 @@ mapColor <- function(x, r = if (is.numeric(x)) range(x) else levels(as.factor(x)
 }
 
 mapFill <- function(x, r = if (is.numeric(x)) range(x) else levels(as.factor(x)),
-                    pallette = theme$polygon$fill, regions = theme$regions$col, ..., theme = yagp.theme())
+                    pallette = theme$polygon$fill, regions = theme$regions$col, ..., theme = imp.theme())
 {
     if (is.numeric(x)) level.colors(x, colramp = regions)
     else

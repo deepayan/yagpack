@@ -550,7 +550,7 @@ map_map <- function(...)
     f <- function(x = NULL, y = NULL, ..., map,
                   cuts = 30, breaks,
                   col = NULL, fill = NULL, 
-                  colramp = yagp.theme()$regions$col,
+                  colramp = imp.theme()$regions$col,
                   limits = TRUE)
     {
         l <- list(x = map$x, y = map$y)

@@ -29,8 +29,8 @@ yabline <-
              reg = NULL, coef = NULL,
              ...,
              reference = FALSE,
-             col = if (reference) yagp.theme()$reference$col
-                   else yagp.theme()$add.line$col,
+             col = if (reference) imp.theme()$reference$col
+                   else imp.theme()$add.line$col,
              vp)
 {
     if (!is.null(h) || !is.null(v))
@@ -86,7 +86,7 @@ yabline <-
 
 
 ygrid <-
-    function(h = 3, v = 3, col = yagp.theme()$reference$col,
+    function(h = 3, v = 3, col = imp.theme()$reference$col,
              xlim = vp$xlim, ylim = vp$ylim, # explicit limits, for (pretty) dates etc
              ..., vp)
 {

@@ -1,19 +1,19 @@
 
-.yagpenv <- new.env(parent = emptyenv())
+.impenv <- new.env(parent = emptyenv())
 
 
-yagp.theme <- function(name = c("setting", "default", "lattice", "trellis", "bw"))
+imp.theme <- function(name = c("setting", "default", "lattice", "trellis", "bw"))
 {
     name <- match.arg(name)
     switch(name,
 
            setting = {
-               if (is.null(.yagpenv$theme)) yagp.custom.theme() else .yagpenv$theme
+               if (is.null(.impenv$theme)) imp.custom.theme() else .impenv$theme
            },
            
-           default = yagp.custom.theme(bg = "#eeeeee", reference = "white", axis = "#777777"),
+           default = imp.custom.theme(bg = "#eeeeee", reference = "white", axis = "#777777"),
            
-           lattice = yagp.custom.theme(col = c("#0080ff", "#ff00ff", "darkgreen", "#ff0000", "orange", "#00ff00", "brown"),
+           lattice = imp.custom.theme(col = c("#0080ff", "#ff00ff", "darkgreen", "#ff0000", "orange", "#00ff00", "brown"),
                                          fill = c("#ccffff", "#ffccff", "#ccffcc", "#ffe5cc", "#cce6ff", "#ffffcc", "#ffcccc"),
                                          regions = function(...) rev(cm.colors(...)),
                                          strip = c("#ffe5cc", "#ccffcc", "#ccffff", "#cce6ff", "#ffccff", "#ffcccc", "#ffffcc"),
@@ -21,7 +21,7 @@ yagp.theme <- function(name = c("setting", "default", "lattice", "trellis", "bw"
                                          bg = "transparent",
                                          fg = "black"),
 
-           trellis = yagp.custom.theme(col = c("#00FFFF", "#FF00FF", "#00FF00", "#FF7F00", "#007EFF", "#FFFF00", "#FF0000"),
+           trellis = imp.custom.theme(col = c("#00FFFF", "#FF00FF", "#00FF00", "#FF7F00", "#007EFF", "#FFFF00", "#FF0000"),
                                          fill = c("#CCFFFF", "#FFCCFF", "#CCFFCC", "#FFE5CC", "#CCE5FF", "#FFFFCC", "#FFCCCC"),
                                          regions = function(...) rev(cm.colors(...)),
                                          strip = c("#FFD18F", "#C8FFC8", "#C6FFFF", "#A9E2FF", "#FFC3FF", "#FF8C8A", "#FFFFC3"),
@@ -29,7 +29,7 @@ yagp.theme <- function(name = c("setting", "default", "lattice", "trellis", "bw"
                                          bg = "#909090",
                                          fg = "black"),
 
-           bw = yagp.custom.theme(col = c("#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000"),
+           bw = imp.custom.theme(col = c("#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000"),
                                     fill = c("#7B7B7B", "#D5D5D5", "#8B8B8B", "#C7C7C7", "#9A9A9A", "#B8B8B8", "#A9A9A9"),
                                     regions = grey(seq(0.3^2.2, 0.9^2.2, length = 100)^(1/2.2)),
                                     strip = c("#F2F2F2", "#F2F2F2", "#F2F2F2", "#F2F2F2", "#F2F2F2", "#F2F2F2", "#F2F2F2"),
@@ -40,7 +40,7 @@ yagp.theme <- function(name = c("setting", "default", "lattice", "trellis", "bw"
 
 
 
-yagp.custom.theme <- 
+imp.custom.theme <- 
     function(col = brewer.pal(n = 8, name = "Dark2"),
              fill = brewer.pal(n = 12, name = "Set3"),
              regions = brewer.pal(n = 11, name = "Spectral"),
