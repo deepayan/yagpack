@@ -55,8 +55,8 @@ model-view-control type scheme to enable linked displays) and a
 transparent way to handle mouse/keyboard events in a
 backend-independent way.  We hope to provide such tools, preferably by
 leveraging existing packages like
-(plumbr)[https://github.com/ggobi/plumbr] and
-(objectSignals)[http://cran.r-project.org/web/packages/objectSignals/].
+[plumbr](https://github.com/ggobi/plumbr) and
+[objectSignals](http://cran.r-project.org/web/packages/objectSignals/).
 
 
 ## Current status
@@ -64,6 +64,6 @@ leveraging existing packages like
 The static graphics API is in useable shape, although much work still
 needs to be done.
 
-The dynamic graphics API is still in the planning stages. 
+The dynamic graphics API is in the planning stages. 
 
 
