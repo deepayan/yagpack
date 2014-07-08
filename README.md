@@ -1,5 +1,5 @@
-imp
-===
+# imp
+
 
 Imp (named after the small demons of Discworld widely utilized as
 painters in iconographs) is yet another graphics package for R.
@@ -12,8 +12,8 @@ with `lattice`, the `imp.lattice` package provides wrappers to
 interfaces, as lattice high-level functions.
 
 
-Installation
-------------
+## Installation
+
 
 ```
 install.packages("devtools")
@@ -37,4 +37,33 @@ install_github("deepayan/tessella/quilt")
 
 But this will require a little work (installing cmake and Qt >= 5.2.0)
 on Mac/Linux, and is rather more difficult on Windows.
+
+
+## Long term goals
+
+As an API with multiple backend implementations, the point of
+`tessella` is to cleanly separate the graphics API and rendering
+backends, and thus to serve as a "code once, run anywhere" target for
+graphics programmers.  The goal of the `imp` family of packages is to
+provide a high-level framework for both static and dynamic graphics by
+building on `tessella`.  R graphics devices provide a tested and
+powerful cross-platform solution for static graphics, that can be
+leveraged for publication quality static graphics.  Dynamic and
+interactive graphs usually need faster, if less polished, backends, as
+well as a support framework to enable useful interactions (e.g., a
+model-view-control type scheme to enable linked displays) and a
+transparent way to handle mouse/keyboard events in a
+backend-independent way.  We hope to provide such tools, preferably by
+leveraging existing packages like
+(plumbr)[https://github.com/ggobi/plumbr] and
+(objectSignals)[http://cran.r-project.org/web/packages/objectSignals/].
+
+
+## Current status
+
+The static graphics API is in useable shape, although much work still
+needs to be done.
+
+The dynamic graphics API is still in the planning stages. 
+
 
