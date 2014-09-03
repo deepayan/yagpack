@@ -2,7 +2,7 @@ Package: imp.lattice
 Version: 0.0-1
 Title: Lattice compatibility layer for imp
 Author: Deepayan Sarkar
-Depends: yagpack
+Depends: imp
 LazyData: yes
 Maintainer: Deepayan Sarkar <deepayan.sarkar@gmail.com>
 Description: Wrapper functions with an interface superficially similar to lattice, implemented using yagpack 
